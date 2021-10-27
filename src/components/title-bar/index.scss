@@ -1,0 +1,54 @@
+.title-container {
+  border-bottom: 2px solid #c10d0c;
+  padding-bottom: 2px;
+  .icon-box {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 4px solid #c10d0c;
+    margin-left: 8px;
+  }
+
+  .title-content {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.85);
+    padding-left: 12px;
+    padding-right: 16px;
+  }
+
+  .more-icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+    vertical-align: middle;
+    background: transparent url(~assets/img/sprite_02.png) no-repeat center;
+    background-position: 0 -240px;
+  }
+
+  .link-active {
+    &:not(:last-child) {
+      padding-right: 8px;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 12px;
+        background-color: #c2c2c2;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    &:not(:first-child) {
+      padding-left: 8px;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

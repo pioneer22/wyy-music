@@ -1,0 +1,82 @@
+.footer-container {
+  border-top: 1px solid #d3d3d3;
+  background: #f2f2f2;
+  height: 172px;
+  .footer-content {
+    padding-top: 20px;
+    .footer-left {
+      & > p:not(:first-child) {
+        padding-top: 8px;
+      }
+
+      .footer-link {
+        padding-right: 10px;
+        &:not(:last-of-type) {
+          border-right: 1px solid #c2c2c2;
+        }
+        &:not(:first-of-type) {
+          padding-left: 10px;
+        }
+      }
+
+      .footer-text {
+        padding-right: 14px;
+      }
+
+      .police-logo {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-size: 100% 100%;
+        background-image: url('https://s2.music.126.net/style/web2/img/3rd/police.png?546b40805ab9aba9cce6fc9d111792c6');
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .footer-right {
+      padding-right: 10px;
+      .link {
+        padding: 20px;
+        & > a {
+          display: inline-block;
+          width: 50px;
+          height: 45px;
+          background-image: url(~assets/img/sprite_footer_02.png);
+          background-size: 110px 450px;
+        }
+
+        & > span {
+          padding: 5px 0px 0px 2px;
+          color: #d0d0d0;
+        }
+
+        &:nth-child(1) {
+          a {
+            background-position: -60px -101px;
+          }
+        }
+
+        &:nth-child(2) {
+          a {
+            background-position: 0 0;
+          }
+        }
+
+        &:nth-child(3) {
+          a {
+            background-position: -60px -50px;
+          }
+        }
+
+        &:nth-child(4) {
+          a {
+            background-position: 0 -101px;
+          }
+        }
+      }
+    }
+  }
+}

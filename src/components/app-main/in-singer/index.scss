@@ -1,0 +1,30 @@
+.in-singer-item {
+  background-color: #fafafa;
+  height: 62px;
+  width: 210px;
+  margin-top: 12px;
+  &:hover {
+    background-color: #f4f4f4;
+  }
+  & > img {
+    width: 62px;
+    height: 62px;
+  }
+
+  .singer-info {
+    padding-left: 14px;
+    height: 62px;
+    width: 148px;
+    border: 1px solid #e9e9e9;
+    border-left: none;
+    h4 {
+      margin-top: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    p {
+      width: 90%;
+      margin-top: 6px;
+    }
+  }
+}

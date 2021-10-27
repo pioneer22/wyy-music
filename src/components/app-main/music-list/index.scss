@@ -1,0 +1,121 @@
+.music-list-box {
+  .list-type {
+    width: 230px;
+    height: 100px;
+    padding: 20px 0px 0px 19px;
+    display: flex;
+    & > img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .list-title {
+      padding-left: 15px;
+      padding-top: 15px;
+      & > p {
+        font-weight: bold;
+        font-size: 14px;
+        padding-bottom: 5px;
+        color: rgba(0, 0, 0, 0.85);
+      }
+
+      .list-operator {
+        & > i {
+          display: inline-block;
+          width: 22px;
+          height: 22px;
+          margin-right: 10px;
+          background: url(~assets/img/sprite_02.png) no-repeat 0 9999px;
+          &:first-child {
+            background-position: -267px -205px;
+          }
+          &:last-child {
+            background-position: -300px -205px;
+          }
+        }
+      }
+    }
+  }
+
+  .music-sort {
+    padding: 20px 0px 0px 20px;
+
+    .music-item {
+      width: 208px;
+      height: 32px;
+      & > span {
+        display: inline-block;
+        width: 20px;
+        text-align: center;
+        margin-right: 5px;
+        line-height: 32px;
+      }
+
+      & > a{
+        display: inline-block;
+        width: 180px;
+        height: 32px;
+        line-height: 32px;
+        vertical-align: middle;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+
+      &:nth-child(-n + 3) {
+        & > span {
+          color: #c10d0c;
+          font-weight: bold;
+        }
+      }
+
+      &:hover {
+        & > a{
+          width: 96px;
+        }
+
+        .music-operator {
+          display: inline-block;
+        }
+      }
+
+      &:last-child{
+        text-align: right;
+        padding-right: 8px;
+        a:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .music-operator {
+        display: none;
+        width: 84px;
+        position: relative;
+        top: 5px;
+        & > i {
+          display: inline-block;
+          width: 17px;
+          height: 17px;
+          margin-left: 8px;
+          cursor: pointer;
+          background: url(~assets/img/sprite_02.png) no-repeat 0 9999px;
+          &:first-child {
+            background-position: -267px -268px;
+          }
+
+          &:nth-child(2) {
+            background: url(~assets/img/sprite_icon2.png) no-repeat 0 9999px;
+            background-position: 0 -700px;
+            position: relative;
+            top: 2px;
+            left: 1px;
+          }
+
+          &:last-child {
+            background-position: -297px -268px;
+          }
+        }
+      }
+    }
+  }
+}

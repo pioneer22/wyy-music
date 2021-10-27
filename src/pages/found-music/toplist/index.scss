@@ -1,0 +1,48 @@
+.top-content {
+  box-sizing: border-box;
+  border: 1px solid #d3d3d3;
+  border-width: 0px 1px;
+}
+
+.toplist-content {
+  .toplist-content-left {
+    display: table-cell;
+    vertical-align: top;
+    border-right: 0px;
+    background-color: #f9f9f9;
+    width: 250px;
+    padding: 30px 0px;
+    @extend .top-content;
+    .ranking-title {
+      padding-left: 10px;
+      color: #000;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .ranking-item {
+      padding: 8px 15px;
+      &:hover {
+        background-color: #e6e6e6;
+      }
+      & > div {
+        padding-left: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        & > span:last-child {
+          color: #999;
+        }
+      }
+    }
+  }
+
+  .toplist-content-right {
+    display: table-cell;
+    width: 730px;
+    @extend .top-content;
+    padding-top: 20px;
+    background-color: white;
+    @extend .top-content;
+  }
+}
