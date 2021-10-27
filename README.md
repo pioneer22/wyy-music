@@ -71,4 +71,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 git remote -v
 git push -u pioneer22/wyy-music master
-git remote remove pioneer22/wyy-music
+git remote remove xx
+
