@@ -8,3 +8,8 @@ export const delNum = (num) => {
   }
   return newNum;
 }
+
+export const delDate = dateTime => {
+  let time = new Date(dateTime)
+  return `${time.getMonth() + 1}月${time.getDate()}日`;
+}

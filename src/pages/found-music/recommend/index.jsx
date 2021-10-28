@@ -17,26 +17,14 @@ import { hotRecommend } from '@/common/page-data'
 import { connect } from 'react-redux'
 import {} from '@/redux/actions/recommend'
 
-import {
-  getPersonalized,
-  getNewSet,
-  getPlayList,
-  getHotSinger,
-  getHotAnchor,
-} from '@/api/foundMusic'
+import * as recData from './getData'
 
 import './index.scss'
-
-const delPlayList = (playList) => {
-  playList.tracks = playList.tracks.slice(0, 10)
-  playList.coverImgUrl = playList.coverImgUrl + '?param=80x80'
-  return playList
-}
 
 class Recommend extends Component {
   state = {
     personalizeds: [],
-    newest: [],
+    newset: [],
     ycLists: [],
     bsLists: [],
     xgLists: [],
@@ -45,89 +33,39 @@ class Recommend extends Component {
   }
 
   componentDidMount() {
-    getPersonalized().then((res) => {
-      if (res.code === 200) {
-        let personalizeds = res.result.map((item) => ({
-          ...item,
-          picUrl: item.picUrl + '?param=140x140',
-        }))
-        this.setState({
-          personalizeds,
-        })
-      }
+    recData.personalized.then((personalizeds) => {
+      this.setState({ personalizeds })
     })
 
-    getNewSet().then((res) => {
-      if (res.code === 200) {
-        let albums = res.albums.map((item, index) => ({
-          songName: item.name,
-          ...item.artist,
-          picUrlSet: item.picUrl + '?param=100x100',
-        }))
-
-        albums = albums.reduce((acc, item, index) => {
-          if ((index + 1) % 5 === 0)
-            return [...acc, albums.slice(index - 4, index + 1)]
-          return acc
-        }, [])
-
-        this.setState({
-          newest: albums,
-        })
-      }
+    recData.newSet.then((newset) => {
+      this.setState({ newset })
     })
 
-    // 原创榜
-    getPlayList(2884035).then((res) => {
-      if (res.code === 200) {
-        let ycLists = delPlayList(res.playlist)
-        this.setState({ ycLists })
-      }
+    recData.allLists(2884035).then((ycLists) => {
+      this.setState({ ycLists })
     })
 
-    // 飙升榜
-    getPlayList(19723756).then((res) => {
-      if (res.code === 200) {
-        let bsLists = delPlayList(res.playlist)
-        this.setState({ bsLists })
-      }
+    recData.allLists(19723756).then((bsLists) => {
+      this.setState({ bsLists })
     })
 
-    // 新歌榜
-    getPlayList(3779629).then((res) => {
-      if (res.code === 200) {
-        let xgLists = delPlayList(res.playlist)
-        this.setState({ xgLists })
-      }
+    recData.allLists(3779629).then((xgLists) => {
+      this.setState({ xgLists })
     })
 
-    // 获取热门歌手
-    getHotSinger({ limit: 5, offset: 0 }).then((res) => {
-      if (res.code === 200) {
-        let hotSingerLists = res.artists.map((item) => ({
-          ...item,
-          picUrl: item.picUrl + '?param=80x80',
-        }))
-        this.setState({ hotSingerLists })
-      }
+    recData.hotSinger.then((hotSingerLists) => {
+      this.setState({ hotSingerLists })
     })
 
-    // 获取热门主播
-    getHotAnchor().then((res) => {
-      if (res.code === 200) {
-        let hotAnchorLists = res.data.list.map((haObj) => ({
-          ...haObj,
-          avatarUrl: haObj.avatarUrl + '?param=40x40',
-        }))
-        this.setState({ hotAnchorLists })
-      }
+    recData.hotAnchor.then((hotAnchorLists) => {
+      this.setState({ hotAnchorLists })
     })
   }
 
   render() {
     const {
       personalizeds,
-      newest,
+      newset,
       ycLists,
       bsLists,
       xgLists,
@@ -152,7 +90,7 @@ class Recommend extends Component {
 
             <TitleBar titleObj={{ name: '新碟上架', link: '' }}></TitleBar>
             <div className="new-content common-content">
-              <Putaway news={newest}></Putaway>
+              <Putaway news={newset}></Putaway>
             </div>
 
             <TitleBar titleObj={{ name: '榜单', link: '' }}></TitleBar>
@@ -186,7 +124,6 @@ class Recommend extends Component {
               <div className="in-singer">
                 <span>热门主播</span>
               </div>
-
               <>
                 {hotAnchorLists &&
                   hotAnchorLists.map((haObj) => {

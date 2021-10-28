@@ -34,6 +34,10 @@
           color: #999;
         }
       }
+
+      /*  .ranking-item-select {
+        background-color: #e6e6e6;
+      } */
     }
   }
 
@@ -43,6 +47,27 @@
     @extend .top-content;
     padding-top: 20px;
     background-color: white;
-    @extend .top-content;
+    padding: 40px;
+    .toplist-icon {
+      width: 162px;
+      height: 162px;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .toplist-current {
+      padding-left: 30px;
+      & > h2 {
+        padding: 15px 0px 8px;
+        line-height: 24px;
+        font-size: 20px;
+      }
+
+      .toplist-update {
+        &-time {
+          padding-left: 10px;
+        }
+      }
+    }
   }
 }
