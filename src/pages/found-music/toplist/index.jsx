@@ -4,21 +4,32 @@ import { NavLink, Route } from 'react-router-dom'
 import TopListDetail from './toplist-detail'
 import * as topData from './getData'
 
-import './index.scss'
+import { connect } from 'react-redux'
+import { saveSelectList } from '@/redux/actions/toplist'
 
-export default class TopList extends Component {
+import './index.scss'
+class TopList extends Component {
   state = {
     ranks: [],
     selectList: {},
   }
 
   componentDidMount() {
-    topData.topList.then((ranks) => {
-      this.setState({ ranks })
-      topData.playList(ranks[0].id).then((selectList) => {
-        this.setState({ selectList })
+    topData.topList
+      .then((ranks) => {
+        this.setState({ ranks })
+        this.props.saveSelectList(ranks[0])
+        return ranks[0].id
       })
-    })
+      .then((id) => {
+        this.props.history.push(`/home/foundMusic/toplist?id=${id}`)
+      })
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return
+    }
   }
 
   render() {
@@ -44,10 +55,10 @@ export default class TopList extends Component {
                   ''
                 )}
                 <NavLink
-                  key={index}
+                  key={rankObj.id}
                   to={'/home/foundMusic/toplist?id=' + rankObj.id}
                   className="ranking-item flex"
-                  activeClassName="ranking-item-select"
+                  onClick={() => this.props.saveSelectList(rankObj)}
                 >
                   <img src={rankObj.coverImgUrl} alt="" />
                   <div>
@@ -70,3 +81,7 @@ export default class TopList extends Component {
     )
   }
 }
+
+export default connect((store) => ({ toplist: store.toplist }), {
+  saveSelectList,
+})(TopList)

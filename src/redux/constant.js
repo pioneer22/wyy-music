@@ -13,3 +13,5 @@ export const SAVEHOTSINGER = 'saveHotSinger'; // 入驻歌手
 
 export const SAVEHOTANCHER = 'saveHotAnchor'; // 热门主播
 
+export const SAVESELECTLIST = 'saveSelectList'; // 选中榜单
+

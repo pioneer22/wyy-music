@@ -43,6 +43,12 @@ class Banner extends Component {
     })
   }
 
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return
+    }
+  }
+
   render() {
     const { currentBg, banners } = this.state
     return (

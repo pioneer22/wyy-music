@@ -7,11 +7,14 @@ import recommend from './recommend'
 
 import banner from './banner'
 
+import toplist from './toplist'
+
 // 引入combineReducers， 用于汇总多个reducer
 import { combineReducers } from 'redux'
 
 // 汇总所有reducers
 export default combineReducers({
   recommend,
-  banner
+  banner,
+  toplist
 })

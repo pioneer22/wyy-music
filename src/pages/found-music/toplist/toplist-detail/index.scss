@@ -1,0 +1,236 @@
+.my-inner {
+  display: flex;
+  width: 100%;
+  height: 31px;
+  line-height: 31px;
+}
+
+.my-padding {
+  padding-right: 2px;
+  padding-left: 28px;
+}
+
+.toplist-icon {
+  width: 162px;
+  height: 162px;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+.toplist-current {
+  margin-left: 30px;
+  & > h2 {
+    padding: 18px 0px 8px;
+    line-height: 24px;
+    font-size: 20px;
+  }
+
+  .toplist-update {
+    &-time {
+      padding-left: 10px;
+      color: #666;
+      & > span {
+        margin-left: 10px;
+        color: #999;
+      }
+    }
+  }
+
+  .play-box {
+    margin-bottom: 25px;
+    margin-right: -10px;
+    padding-top: 30px;
+
+    .play {
+      position: relative;
+      color: #fff;
+      width: 66px;
+      height: 31px;
+      padding: 0 5px 0 0;
+      margin-right: 35px;
+      line-height: 31px;
+      background-position: right -428px;
+      cursor: pointer;
+      .inner {
+        padding: 0 7px 0 8px;
+        background-position: 0 -387px;
+        @extend .my-inner;
+        .play-icon {
+          width: 20px;
+          height: 18px;
+          margin: 6px 2px 2px 0;
+          background-position: 0 -1622px;
+          overflow: hidden;
+        }
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: -29px;
+        top: 0;
+        bottom: 0;
+        width: 31px;
+        background: url(~assets/img/sprite_button.png) 0 9999px;
+        background-position: 0 -1588px;
+      }
+    }
+
+    .favorite {
+      background-position: right -1020px;
+      margin-right: 6px;
+      padding: 0 5px 0 0;
+      .inner {
+        background-position: 0 -977px;
+        @extend .my-padding;
+        @extend .my-inner;
+      }
+    }
+
+    .share {
+      background-position: right -1020px;
+      margin-right: 6px;
+      padding: 0 5px 0 0;
+      .inner {
+        background-position: 0 -1225px;
+        @extend .my-padding;
+        @extend .my-inner;
+      }
+    }
+
+    .download {
+      background-position: right -1020px;
+      margin-right: 6px;
+      padding: 0 5px 0 0;
+      .inner {
+        background-position: 0 -2761px;
+        @extend .my-padding;
+        @extend .my-inner;
+      }
+    }
+
+    .comment {
+      background-position: right -1020px;
+      margin-right: 6px;
+      padding: 0 5px 0 0;
+
+      .inner {
+        background-position: 0 -1465px;
+        @extend .my-padding;
+        @extend .my-inner;
+      }
+    }
+  }
+}
+
+.song-lists {
+  padding-top: 50px;
+  .song-bar {
+    padding-bottom: 2px;
+    border-bottom: 2px solid #c10d0c;
+    &-title {
+      & > span {
+        font-size: 20px;
+        padding-right: 10px;
+      }
+    }
+  }
+
+  .play-count {
+    display: flex;
+    align-items: flex-end;
+    & > span {
+      color: #c20c0c;
+    }
+  }
+}
+
+.toplist-song {
+  border: 1px solid #dadada;
+  .song-header {
+    border-bottom: 1px solid #dadada;
+    .header-item {
+      height: 34px;
+      line-height: 18px;
+      padding: 8px 10px;
+      background-position: 0 0;
+      background-repeat: repeat-x;
+      background-color: #f2f2f2;
+      color: #666;
+      &:first-child {
+        width: 74px;
+      }
+      &:nth-child(2) {
+        width: 327px;
+      }
+      &:nth-child(3) {
+        width: 91px;
+      }
+      &:nth-child(4) {
+        width: 173px;
+      }
+      &:not(:last-child) {
+        border-right: 1px solid #dadada;
+      }
+    }
+  }
+
+  .song-list-box {
+    .song-item-box {
+      &:nth-child(odd) {
+        background: #f7f7f7;
+      }
+
+      .song-item {
+        padding: 4px 10px;
+        color: #666;
+        &:first-child {
+          text-align: center;
+          color: #999;
+          width: 74px;
+        }
+        &:nth-child(2) {
+          width: 327px;
+          img {
+            width: 50px;
+            height: 50px;
+            margin-right: 14px;
+          }
+
+          .song-detail {
+            width: 307px;
+            .song-name {
+              padding-left: 6px;
+            }
+          }
+
+          .add_btn {
+            width: 17px;
+            height: 17px;
+            margin-left: 8px;
+            cursor: pointer;
+            background-position: 0 -700px;
+            transform: translateY(2px);
+          }
+        }
+        &:nth-child(3) {
+          width: 91px;
+        }
+        &:nth-child(4) {
+          width: 173px;
+        }
+      }
+
+      &:nth-child(-n + 3) {
+        height: 70px;
+        .song-item {
+          &:nth-child(2) {
+            .song-detail {
+              width: 242px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

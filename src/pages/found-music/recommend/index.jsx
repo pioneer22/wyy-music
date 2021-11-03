@@ -15,7 +15,13 @@ import { RightOutlined } from '@ant-design/icons'
 import { hotRecommend } from '@/common/page-data'
 
 import { connect } from 'react-redux'
-import {} from '@/redux/actions/recommend'
+import {
+  savePersonalized,
+  saveNewSet,
+  savePlayList,
+  saveHotSinger,
+  saveHotAnchor,
+} from '@/redux/actions/recommend'
 
 import * as recData from './getData'
 
@@ -34,32 +40,43 @@ class Recommend extends Component {
 
   componentDidMount() {
     recData.personalized.then((personalizeds) => {
+      this.props.savePersonalized(personalizeds)
       this.setState({ personalizeds })
     })
 
     recData.newSet.then((newset) => {
+      this.props.saveNewSet(newset)
       this.setState({ newset })
     })
 
-    recData.allLists(2884035).then((ycLists) => {
-      this.setState({ ycLists })
-    })
-
-    recData.allLists(19723756).then((bsLists) => {
-      this.setState({ bsLists })
-    })
-
-    recData.allLists(3779629).then((xgLists) => {
-      this.setState({ xgLists })
+    Promise.all([
+      recData.allLists(2884035),
+      recData.allLists(19723756),
+      recData.allLists(3779629),
+    ]).then((res) => {
+      this.setState({ ycLists: res[0], bsLists: res[1], xgLists: res[2] })
+      this.props.savePlayList({
+        ycLists: res[0],
+        bsLists: res[1],
+        xgLists: res[2],
+      })
     })
 
     recData.hotSinger.then((hotSingerLists) => {
+      this.props.saveHotSinger(hotSingerLists)
       this.setState({ hotSingerLists })
     })
 
     recData.hotAnchor.then((hotAnchorLists) => {
+      this.props.saveHotAnchor(hotAnchorLists)
       this.setState({ hotAnchorLists })
     })
+  }
+
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return
+    }
   }
 
   render() {
@@ -138,7 +155,10 @@ class Recommend extends Component {
   }
 }
 
-export default connect(
-  (store) => ({ recommend: store.recommend }),
-  {}
-)(Recommend)
+export default connect((store) => ({ recommend: store.recommend }), {
+  savePersonalized,
+  saveNewSet,
+  savePlayList,
+  saveHotSinger,
+  saveHotAnchor,
+})(Recommend)
