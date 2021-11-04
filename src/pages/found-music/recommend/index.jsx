@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 
 import Banner from 'components/app-main/banner'
 import TitleBar from 'components/title-bar'
@@ -26,7 +27,6 @@ import {
 import * as recData from './getData'
 
 import './index.scss'
-
 class Recommend extends Component {
   state = {
     personalizeds: [],
@@ -96,8 +96,24 @@ class Recommend extends Component {
         <div className="recommend-content w980">
           <div className="recommend-content-left">
             <TitleBar
+              hasIcon="true"
               titleObj={{ name: '热门推荐', link: '' }}
-              links={hotRecommend}
+              centerSlot={hotRecommend.map((item) => {
+                return (
+                  <NavLink
+                    to={item.link}
+                    key={item.name}
+                    className="link-active"
+                  >
+                    {item.name}
+                  </NavLink>
+                )
+              })}
+              rightSlot={
+                <div>
+                  更多<i className="more-icon"></i>
+                </div>
+              }
             ></TitleBar>
             <div className="hot-content common-content flex-column">
               {personalizeds.map((perObj) => {
@@ -105,12 +121,28 @@ class Recommend extends Component {
               })}
             </div>
 
-            <TitleBar titleObj={{ name: '新碟上架', link: '' }}></TitleBar>
+            <TitleBar
+              hasIcon="true"
+              titleObj={{ name: '新碟上架', link: '' }}
+              rightSlot={
+                <div>
+                  更多<i className="more-icon"></i>
+                </div>
+              }
+            ></TitleBar>
             <div className="new-content common-content">
               <Putaway news={newset}></Putaway>
             </div>
 
-            <TitleBar titleObj={{ name: '榜单', link: '' }}></TitleBar>
+            <TitleBar
+              hasIcon="true"
+              titleObj={{ name: '榜单', link: '' }}
+              rightSlot={
+                <div>
+                  更多<i className="more-icon"></i>
+                </div>
+              }
+            ></TitleBar>
             <div className="sort-content">
               <MusicList {...ycLists} key="ycLists"></MusicList>
               <MusicList {...bsLists} key="bsLists"></MusicList>
@@ -128,12 +160,10 @@ class Recommend extends Component {
                   <RightOutlined style={{ fontSize: '12px' }} />
                 </a>
               </div>
-              <>
-                {hotSingerLists &&
-                  hotSingerLists.map((hsObj) => {
-                    return <InSinger {...hsObj} key={hsObj.id}></InSinger>
-                  })}
-              </>
+              {hotSingerLists &&
+                hotSingerLists.map((hsObj) => {
+                  return <InSinger {...hsObj} key={hsObj.id}></InSinger>
+                })}
               <div className="be-singer-btn">申请成为网易音乐人</div>
             </div>
 
@@ -141,12 +171,10 @@ class Recommend extends Component {
               <div className="in-singer">
                 <span>热门主播</span>
               </div>
-              <>
-                {hotAnchorLists &&
-                  hotAnchorLists.map((haObj) => {
-                    return <HotAnchor {...haObj} key={haObj.id}></HotAnchor>
-                  })}
-              </>
+              {hotAnchorLists &&
+                hotAnchorLists.map((haObj) => {
+                  return <HotAnchor {...haObj} key={haObj.id}></HotAnchor>
+                })}
             </div>
           </div>
         </div>

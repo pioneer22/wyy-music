@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Carousel } from 'antd'
+import { Carousel, Card } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 
 import { downloadUrl } from '@/common/page-data'
@@ -16,7 +16,6 @@ const carouserBtn = {
   fontSize: '48px',
   color: 'white',
 }
-
 class Banner extends Component {
   changeCarousel = (from, to) => {
     const { banners } = this.state
@@ -28,6 +27,7 @@ class Banner extends Component {
   state = {
     currentBg: '',
     banners: [],
+    loading: true,
   }
 
   componentDidMount() {
@@ -37,7 +37,7 @@ class Banner extends Component {
           banners: res.banners,
           currentBg: res.banners[0].imageUrl + '?imageView&blur=40x20',
         }
-        this.setState(bannerObj)
+        this.setState({ ...bannerObj, loading: false })
         this.props.saveBanner(bannerObj)
       }
     })
@@ -50,7 +50,7 @@ class Banner extends Component {
   }
 
   render() {
-    const { currentBg, banners } = this.state
+    const { currentBg, banners, loading } = this.state
     return (
       <div
         className="carousel-container"
@@ -65,30 +65,37 @@ class Banner extends Component {
           <div className="carouser-right" onClick={() => this.carousel.next()}>
             <RightOutlined style={carouserBtn} />
           </div>
-          <Carousel
-            autoplay
-            ref={(c) => (this.carousel = c)}
-            style={{ width: '730px' }}
-            beforeChange={this.changeCarousel}
+          <Card
+            style={{ width: 980 }}
+            bodyStyle={{ padding: 0 }}
+            loading={loading}
+            bordered={false}
           >
-            {banners.map((bannerObj) => {
-              return (
-                <img
-                  src={bannerObj.imageUrl}
-                  alt={bannerObj.typeTitle}
-                  key={bannerObj.targetId}
-                />
-              )
-            })}
-          </Carousel>
-          <a
-            href={downloadUrl}
-            className="download-box"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {' '}
-          </a>
+            <Carousel
+              autoplay
+              ref={(c) => (this.carousel = c)}
+              style={{ width: '730px' }}
+              beforeChange={this.changeCarousel}
+            >
+              {banners.map((bannerObj) => {
+                return (
+                  <img
+                    src={bannerObj.imageUrl}
+                    alt={bannerObj.typeTitle}
+                    key={bannerObj.targetId}
+                  />
+                )
+              })}
+            </Carousel>
+            <a
+              href={downloadUrl}
+              className="download-box"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {' '}
+            </a>
+          </Card>
         </div>
       </div>
     )
