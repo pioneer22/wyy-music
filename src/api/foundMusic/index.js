@@ -13,3 +13,7 @@ export const getHotSinger = ({ limit, offset }) => request({ url: '/top/artists'
 export const getHotAnchor = (limit = 5) => request({ url: '/dj/toplist/popular', params: { limit } }); // 获取热门主播
 
 export const getTopList = () => request({ url: '/toplist' }); // 获取排行榜
+
+export const getCatList = () => request({ url: '/playlist/catlist' }); // 获取歌单分类
+
+export const getSongList = ({ cat, limit, offset }) => request({ url: '/playlist/catlist', params: { cat, limit, offset } }); // 获取歌单
