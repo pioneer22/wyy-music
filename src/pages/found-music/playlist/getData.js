@@ -24,4 +24,9 @@ export const catList = getCatList().then(res => {
     }))
   }
   return []
+});
+
+export const songTypeList = (params) => getSongList(params).then(res => {
+  console.log(res)
+  return res.playlists.map(lists => ({ ...lists, picUrl: lists.coverImgUrl + '?param=140x140' }));
 })

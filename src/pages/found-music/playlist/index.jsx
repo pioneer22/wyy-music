@@ -7,6 +7,7 @@ import { DownOutlined } from '@ant-design/icons'
 import * as playlistData from './getData'
 
 import TitleBar from 'components/title-bar'
+import MusicModule from 'components/music-module'
 import './index.scss'
 
 const title = (
@@ -17,18 +18,22 @@ const title = (
 export default class Playlist extends Component {
   componentDidMount() {
     playlistData.catList.then((songLists) => {
-      console.log(songLists)
       this.setState({ songLists })
+    })
+
+    playlistData.songTypeList({ limit: 48 }).then((songTypeLists) => {
+      this.setState({ songTypeLists })
     })
   }
 
   state = {
     catTitle: '全部',
     songLists: [],
+    songTypeLists: [],
   }
 
   render() {
-    const { catTitle, songLists } = this.state
+    const { catTitle, songLists, songTypeLists } = this.state
     return (
       <div className="w980 playlist-box">
         <TitleBar
@@ -39,32 +44,28 @@ export default class Playlist extends Component {
               title={title}
               content={
                 <div className="playlist-items-container">
-                  {songLists &&
-                    songLists.map((types) => {
-                      return (
-                        <dl
-                          className="playlist-item flex"
-                          key={types.direction}
-                        >
-                          <dt className="playlist-direction flex-column">
-                            <i
-                              className="icon sprite_icon2"
-                              style={types.style}
-                            ></i>
-                            <span>{types.direction}</span>
-                          </dt>
-                          <dd className="playlist-type flex-column">
-                            {types.typeLists.map((item, index) => {
-                              return (
-                                <div className="playlist-type-item" key={index}>
-                                  {item.name}
-                                </div>
-                              )
-                            })}
-                          </dd>
-                        </dl>
-                      )
-                    })}
+                  {songLists.map((types) => {
+                    return (
+                      <dl className="playlist-item flex" key={types.direction}>
+                        <dt className="playlist-direction flex-column">
+                          <i
+                            className="icon sprite_icon2"
+                            style={types.style}
+                          ></i>
+                          <span>{types.direction}</span>
+                        </dt>
+                        <dd className="playlist-type flex-column">
+                          {types.typeLists.map((item, index) => {
+                            return (
+                              <div className="playlist-type-item" key={index}>
+                                {item}
+                              </div>
+                            )
+                          })}
+                        </dd>
+                      </dl>
+                    )
+                  })}
                 </div>
               }
               trigger="click"
@@ -76,6 +77,14 @@ export default class Playlist extends Component {
           }
           rightSlot={<button className="playlist-hot">热门</button>}
         ></TitleBar>
+
+        <div className="playlist-type-container">
+          <div className="playlist-type-songs flex">
+            {songTypeLists.map((lists) => {
+              return <MusicModule {...lists} key={lists.id}></MusicModule>
+            })}
+          </div>
+        </div>
       </div>
     )
   }

@@ -103,4 +103,13 @@
     border-radius: 3px;
     border: 1px solid #aaa;
   }
+
+  .playlist-type-container {
+    padding: 30px 0px;
+    .playlist-type-songs {
+      width: 900px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+  }
 }
