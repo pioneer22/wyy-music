@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
 import './index.scss'
 
 export default class TitleBar extends Component {
@@ -9,12 +8,9 @@ export default class TitleBar extends Component {
       <div className="title-container flex-between-center">
         <div className="flex-column">
           {hasIcon && <span className="icon-box"></span>}
-          <NavLink to={titleObj.link} className="title-content">
-            {titleObj.name}
-          </NavLink>
+          <div className="title-content">{titleObj.name}</div>
           <div className="flex-column">{centerSlot}</div>
         </div>
-
         {rightSlot}
       </div>
     )

@@ -1,11 +1,16 @@
 import React, { Component, Fragment } from 'react'
-import { NavLink, Route } from 'react-router-dom'
+
+import qs from 'querystring'
 
 import TopListDetail from './toplist-detail'
-import * as topData from './getData'
+import * as topData from './request'
 
 import { connect } from 'react-redux'
-import { saveSelectList } from '@/redux/actions/toplist'
+import {
+  saveSelectList,
+  saveTopLists,
+  savePlayListDetail,
+} from '@/redux/actions/toplist'
 
 import './index.scss'
 class TopList extends Component {
@@ -15,21 +20,40 @@ class TopList extends Component {
   }
 
   componentDidMount() {
-    topData.topList
-      .then((ranks) => {
+    const { search } = this.props.location
+    const { id } = qs.parse(search.slice(1))
+
+    let topLists = this.props.toplist.topLists
+    if (topLists) {
+      this.setState({ ranks: topLists })
+      let topId = id || topLists[0].id
+      topData.playList(topId).then((playlistObj) => {
+        this.props.savePlayListDetail(playlistObj)
+      })
+    } else {
+      topData.topList().then((ranks) => {
         this.setState({ ranks })
         this.props.saveSelectList(ranks[0])
-        return ranks[0].id
+        this.props.saveTopLists(ranks)
+        topData.playList(ranks[0].id).then((playlistObj) => {
+          this.props.savePlayListDetail(playlistObj)
+        })
       })
-      .then((id) => {
-        this.props.history.push(`/home/foundMusic/toplist?id=${id}`)
-      })
+    }
   }
 
   componentWillUnmount() {
     this.setState = (state, callback) => {
       return
     }
+  }
+
+  selectList(rankObj) {
+    this.props.saveSelectList(rankObj)
+    topData.playList(rankObj.id).then((playlistObj) => {
+      this.props.savePlayListDetail(playlistObj)
+    })
+    this.props.history.push(`/home/foundMusic/toplist?id=${rankObj.id}`)
   }
 
   render() {
@@ -54,28 +78,24 @@ class TopList extends Component {
                 ) : (
                   ''
                 )}
-                <NavLink
+                <div
                   key={rankObj.id}
-                  to={'/home/foundMusic/toplist?id=' + rankObj.id}
                   className="ranking-item flex"
-                  onClick={() => this.props.saveSelectList(rankObj)}
+                  onClick={() => this.selectList(rankObj)}
                 >
                   <img src={rankObj.coverImgUrl} alt="" />
                   <div>
                     <span>{rankObj.name}</span>
                     <span>{rankObj.updateFrequency}</span>
                   </div>
-                </NavLink>
+                </div>
               </Fragment>
             )
           })}
         </div>
 
         <div className="toplist-content-right">
-          <Route
-            path="/home/foundMusic/toplist"
-            component={TopListDetail}
-          ></Route>
+          <TopListDetail />
         </div>
       </div>
     )
@@ -84,4 +104,6 @@ class TopList extends Component {
 
 export default connect((store) => ({ toplist: store.toplist }), {
   saveSelectList,
+  saveTopLists,
+  savePlayListDetail,
 })(TopList)

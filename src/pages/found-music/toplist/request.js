@@ -1,7 +1,7 @@
 import { getTopList, getPlayList } from '@/api/foundMusic'
 import { delDate } from 'utils/utils'
 
-export const topList = getTopList().then((res) => {
+export const topList = () => getTopList().then((res) => {
   if (res.code === 200) {
     return res.list.map((item) => ({
       ...item,

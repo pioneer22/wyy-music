@@ -24,7 +24,7 @@ import {
   saveHotAnchor,
 } from '@/redux/actions/recommend'
 
-import * as recData from './getData'
+import * as recData from './request'
 
 import './index.scss'
 class Recommend extends Component {
@@ -97,11 +97,11 @@ class Recommend extends Component {
           <div className="recommend-content-left">
             <TitleBar
               hasIcon="true"
-              titleObj={{ name: '热门推荐', link: '' }}
+              titleObj={{ name: '热门推荐' }}
               centerSlot={hotRecommend.map((item) => {
                 return (
                   <NavLink
-                    to={item.link}
+                    to={`/home/foundMusic/playlist?cat=${item.name}`}
                     key={item.name}
                     className="link-active"
                   >
@@ -123,7 +123,7 @@ class Recommend extends Component {
 
             <TitleBar
               hasIcon="true"
-              titleObj={{ name: '新碟上架', link: '' }}
+              titleObj={{ name: '新碟上架' }}
               rightSlot={
                 <div>
                   更多<i className="more-icon"></i>
@@ -136,7 +136,7 @@ class Recommend extends Component {
 
             <TitleBar
               hasIcon="true"
-              titleObj={{ name: '榜单', link: '' }}
+              titleObj={{ name: '榜单' }}
               rightSlot={
                 <div>
                   更多<i className="more-icon"></i>
@@ -144,9 +144,9 @@ class Recommend extends Component {
               }
             ></TitleBar>
             <div className="sort-content">
-              <MusicList {...ycLists} key="ycLists"></MusicList>
-              <MusicList {...bsLists} key="bsLists"></MusicList>
-              <MusicList {...xgLists} key="xgLists"></MusicList>
+              {[ycLists, bsLists, xgLists].map((item, index) => {
+                return <MusicList {...item} key={'list' + index}></MusicList>
+              })}
             </div>
           </div>
           <div className="recommend-content-right">

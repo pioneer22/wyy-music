@@ -1,14 +1,12 @@
-import React, { Component, lazy } from 'react'
-import { NavLink, Route } from 'react-router-dom'
+import React, { Component } from 'react'
+import { NavLink, Route, Redirect } from 'react-router-dom'
 import { foundLinks } from '@/common/page-data'
 
-import Recommend from 'pages/found-music/recommend'
-
 import './index.scss'
+// import routes from './router'
 
-const TopList = lazy(() => import('pages/found-music/toplist'))
-const PlayList = lazy(() => import('pages/found-music/playlist'))
-
+import { renderRoutes } from 'react-router-config'
+import routes from '@/router'
 export default class FoundMusic extends Component {
   selectItem = (linkObj) => {
     return (
@@ -35,9 +33,16 @@ export default class FoundMusic extends Component {
             </div>
           </div>
         </div>
-        <Route path="/home/foundMusic/recommend" component={Recommend}></Route>
-        <Route path="/home/foundMusic/toplist" component={TopList}></Route>
-        <Route path="/home/foundMusic/playlist" component={PlayList}></Route>
+
+        {/* {routes.map((item, index) => (
+          <Route
+            path={item.path}
+            component={item.component}
+            key={index}
+          ></Route>
+        ))}
+        <Redirect to="/foundMusic/recommend"></Redirect> */}
+        {renderRoutes(routes[1].routes)}
       </div>
     )
   }

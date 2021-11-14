@@ -1,0 +1,41 @@
+.without-login {
+  width: 807px;
+  height: 268px;
+  margin: 40px auto;
+  background: url(~assets/img/mymusic.png) no-repeat 0px 0px;
+  position: relative;
+  .login-btn {
+    cursor: pointer;
+    display: block;
+    width: 167px;
+    height: 45px;
+    position: absolute;
+    left: 482px;
+    top: 202px;
+    z-index: 10;
+    &:hover {
+      background: url(~assets/img/mymusic.png) no-repeat 0px -278px;
+    }
+  }
+}
+
+.friend-without-login {
+  width: 857px;
+  height: 390px;
+  margin: 20px auto;
+  background: url(~assets/img/notlogin.jpg) no-repeat 0px 0px;
+  position: relative;
+  .login-btn {
+    cursor: pointer;
+    display: block;
+    width: 157px;
+    height: 48px;
+    position: absolute;
+    left: 535px;
+    top: 260px;
+    z-index: 10;
+    &:hover {
+      background: url(~assets/img/notlogin.jpg) no-repeat 0px -430px;
+    }
+  }
+}

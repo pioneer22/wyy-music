@@ -110,6 +110,12 @@
       width: 900px;
       justify-content: space-between;
       flex-wrap: wrap;
+      .music-module-box {
+        margin-right: 20px;
+        &:nth-of-type(5n) {
+          margin-right: 0px;
+        }
+      }
     }
   }
 }

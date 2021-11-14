@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import RouterView from '@/router/router-views'
-import config from '@/router'
+
+import Header from 'components/app-header'
+import Main from 'components/app-main'
+import Footer from 'components/app-footer'
 
 import { BackTop } from 'antd';
 
@@ -18,7 +20,10 @@ export default class App extends Component {
   render () {
     return (
       <>
-        <RouterView routes={config.routes}></RouterView>
+        {/* <RouterView routes={config.routes}></RouterView> */}
+        <Header />
+        <Main />
+        <Footer />
         <BackTop>
           <div style={style}>
             TOP

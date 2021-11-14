@@ -239,8 +239,21 @@ main.content {
   align-items: center;
 }
 
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .ellipsis {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.common-center {
+  background-color: white;
+  border-left: 1px solid #d3d3d3;
+  border-right: 1px solid #d3d3d3;
+  min-height: 500px;
+  padding: 40px;
 }

@@ -27,6 +27,11 @@ export const catList = getCatList().then(res => {
 });
 
 export const songTypeList = (params) => getSongList(params).then(res => {
-  console.log(res)
-  return res.playlists.map(lists => ({ ...lists, picUrl: lists.coverImgUrl + '?param=140x140' }));
+  if (res.code === 200) {
+    return {
+      total: res.total,
+      playlists: res.playlists.map(lists => ({ ...lists, picUrl: lists.coverImgUrl + '?param=140x140' }))
+    }
+  }
+  return []
 })

@@ -15,3 +15,7 @@ export const SAVEHOTANCHER = 'saveHotAnchor'; // 热门主播
 
 export const SAVESELECTLIST = 'saveSelectList'; // 选中榜单
 
+export const SAVETOPLISTS = 'saveTopLists'; // 排行榜单
+
+export const SAVEPLAYLISTDETAIL = 'savePlayListDetail'; // 当前选择榜单具体内容
+

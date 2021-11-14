@@ -1,39 +1,56 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
 
-import { Popover } from 'antd'
+import { Popover, Pagination } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
-import * as playlistData from './getData'
+import * as playlistData from './request'
 
 import TitleBar from 'components/title-bar'
 import MusicModule from 'components/music-module'
 import './index.scss'
-
-const title = (
-  <div className="playlist-all">
-    <span>全部风格</span>
-  </div>
-)
 export default class Playlist extends Component {
+  selectSongList(catTitle) {
+    let params =
+      catTitle === '全部' ? { limit: 50 } : { limit: 50, cat: catTitle }
+    playlistData.songTypeList(params).then((lists) => {
+      this.setState({ ...lists, catTitle, current: 1 })
+    })
+  }
+
+  changePage(page, pageSize) {
+    // 分页
+    const { catTitle } = this.state
+    playlistData
+      .songTypeList({ limit: 50, offset: page * pageSize, cat: catTitle })
+      .then((lists) => {
+        this.setState({ ...lists, current: page })
+      })
+  }
+
   componentDidMount() {
     playlistData.catList.then((songLists) => {
       this.setState({ songLists })
     })
+    this.selectSongList('全部')
+  }
 
-    playlistData.songTypeList({ limit: 48 }).then((songTypeLists) => {
-      this.setState({ songTypeLists })
-    })
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return
+    }
   }
 
   state = {
-    catTitle: '全部',
+    catTitle: '',
     songLists: [],
-    songTypeLists: [],
+    playlists: [],
+    total: 0,
+    current: 1,
   }
 
   render() {
-    const { catTitle, songLists, songTypeLists } = this.state
+    const { catTitle, songLists, playlists, total, current } = this.state
     return (
       <div className="w980 playlist-box">
         <TitleBar
@@ -41,7 +58,14 @@ export default class Playlist extends Component {
           centerSlot={
             <Popover
               placement="bottomLeft"
-              title={title}
+              title={
+                <div
+                  className="playlist-all"
+                  onClick={() => this.selectSongList('全部')}
+                >
+                  <span>全部风格</span>
+                </div>
+              }
               content={
                 <div className="playlist-items-container">
                   {songLists.map((types) => {
@@ -57,7 +81,11 @@ export default class Playlist extends Component {
                         <dd className="playlist-type flex-column">
                           {types.typeLists.map((item, index) => {
                             return (
-                              <div className="playlist-type-item" key={index}>
+                              <div
+                                className="playlist-type-item"
+                                key={index}
+                                onClick={() => this.selectSongList(item)}
+                              >
                                 {item}
                               </div>
                             )
@@ -80,10 +108,22 @@ export default class Playlist extends Component {
 
         <div className="playlist-type-container">
           <div className="playlist-type-songs flex">
-            {songTypeLists.map((lists) => {
-              return <MusicModule {...lists} key={lists.id}></MusicModule>
-            })}
+            {playlists.map((lists) => (
+              <MusicModule {...lists} key={lists.id}></MusicModule>
+            ))}
           </div>
+        </div>
+
+        <div className="flex-center">
+          <Pagination
+            current={current}
+            hideOnSinglePage={true}
+            pageSize={50}
+            total={total}
+            showSizeChanger={false}
+            showQuickJumper={true}
+            onChange={(page, pageSize) => this.changePage(page, pageSize)}
+          />
         </div>
       </div>
     )
