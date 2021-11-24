@@ -1,15 +1,10 @@
 import React, { Component } from 'react'
-
 import { Carousel, Card } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-
 import { downloadUrl } from '@/common/page-data'
-
 import { connect } from 'react-redux'
 import { saveBanner } from '@/redux/actions/banner'
-
 import { getBanner } from '@/api/foundMusic'
-
 import './index.scss'
 
 const carouserBtn = {

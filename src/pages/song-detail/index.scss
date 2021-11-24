@@ -1,0 +1,264 @@
+.my-inner {
+  display: flex;
+  width: 100%;
+  height: 31px;
+  line-height: 31px;
+}
+
+.my-padding {
+  padding-right: 2px;
+  padding-left: 28px;
+}
+
+.song-detail {
+  padding: 0px;
+  .song-detail-left {
+    border-right: 1px solid #d3d3d3;
+    padding: 40px;
+    width: 730px;
+    .song-detail-container {
+      .song-detail-album {
+        .img-cover-box {
+          width: 204px;
+          height: 204px;
+          text-align: center;
+          position: relative;
+          .img-cover {
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: url(~assets/img/sprite_cover.png) -140px -581px
+              no-repeat;
+            position: absolute;
+          }
+          img {
+            margin: 36px auto;
+            width: 132px;
+            height: 132px;
+          }
+        }
+      }
+
+      .song-detail-box {
+        flex: 1;
+        padding-left: 25px;
+        .song-detail-name {
+          padding-bottom: 8px;
+          span {
+            &:first-child {
+              display: inline-block;
+              width: 54px;
+              height: 24px;
+              background-position: 0 -463px;
+              transform: translateY(4px);
+            }
+            &:last-child {
+              font-size: 24px;
+              color: #333333;
+              padding-left: 12px;
+            }
+          }
+        }
+
+        .song-introduce {
+          padding: 2px 0px;
+          & > span {
+            &:first-child {
+              color: #999999;
+              padding-right: 4px;
+            }
+            &:last-child {
+              display: inline-block;
+              max-width: 350px;
+              vertical-align: bottom;
+            }
+          }
+
+          .singer-name {
+            color: #0c73c2;
+          }
+        }
+
+        .song-operator {
+          margin-bottom: 25px;
+          padding-top: 10px;
+
+          .play {
+            position: relative;
+            color: #fff;
+            width: 66px;
+            height: 31px;
+            padding: 0 5px 0 0;
+            margin-right: 35px;
+            line-height: 31px;
+            background-position: right -428px;
+            cursor: pointer;
+            .inner {
+              padding: 0 7px 0 8px;
+              background-position: 0 -387px;
+              @extend .my-inner;
+              .play-icon {
+                width: 20px;
+                height: 18px;
+                margin: 6px 2px 2px 0;
+                background-position: 0 -1622px;
+                overflow: hidden;
+              }
+            }
+
+            &::after {
+              content: '';
+              position: absolute;
+              right: -29px;
+              top: 0;
+              bottom: 0;
+              width: 31px;
+              background: url(~assets/img/sprite_button.png) 0 9999px;
+              background-position: 0 -1588px;
+            }
+          }
+
+          .download {
+            background-position: right -1020px;
+            margin-right: 6px;
+            padding: 0 5px 0 0;
+            .inner {
+              background-position: 0 -2761px;
+              @extend .my-padding;
+              @extend .my-inner;
+            }
+          }
+
+          .comment {
+            background-position: right -1020px;
+            margin-right: 6px;
+            padding: 0 5px 0 0;
+
+            .inner {
+              background-position: 0 -1465px;
+              @extend .my-padding;
+              @extend .my-inner;
+            }
+          }
+        }
+
+        .song-words {
+          line-height: 150%;
+          .song-words-show {
+            color: #0c73c2;
+            display: inline-block;
+            padding: 5px 0px;
+          }
+        }
+      }
+    }
+
+    .comment-detail {
+      padding-top: 25px;
+      .my-comment {
+        padding: 20px 0px;
+        img {
+          width: 50px;
+          height: 50px;
+        }
+        &-box {
+          flex: 1;
+          padding-left: 15px;
+          position: relative;
+          textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 5px 6px 6px;
+            border: 1px solid #cdcdcd;
+            border-radius: 2px;
+            box-sizing: border-box;
+          }
+
+          &::after {
+            position: absolute;
+            content: '';
+            border-left: 1px solid #cdcdcd;
+            border-bottom: 1px solid #cdcdcd;
+            background-color: #f5f5f5;
+            width: 10px;
+            height: 10px;
+            top: 12px;
+            left: 10px;
+            transform: rotate(45deg);
+          }
+
+          .ant-btn.ant-btn-primary {
+            span {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+
+      .comment-box {
+        padding-bottom: 30px;
+        .comment-item {
+          padding: 12px 0px;
+          border-bottom: 1px dotted #ccc;
+          img {
+            width: 50px;
+            height: 50px;
+          }
+          .comment-content {
+            flex: 1;
+            padding-left: 12px;
+            .user-name {
+              color: #0c73c2;
+            }
+            .comment-text {
+              padding-left: 10px;
+            }
+
+            .comment-bottom {
+              padding-top: 20px;
+              & > span {
+                color: #999;
+              }
+
+              .like-box {
+                & > span {
+                  margin-left: 8px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .song-detail-right {
+    padding: 10px 28px;
+    flex: 1;
+    .simi-song {
+      padding: 5px 0px;
+      .simi-song-name {
+        width: 160px;
+        & > div {
+          color: #999999;
+        }
+      }
+
+      .play-icon {
+        display: inline-block;
+        width: 17px;
+        height: 17px;
+        background: url(~assets/img/sprite_icon.png) no-repeat 0px 0px;
+      }
+    }
+  }
+}
+
+.sd-title {
+  padding: 5px 0px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+  font-weight: 600;
+}

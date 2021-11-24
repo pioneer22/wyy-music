@@ -12,6 +12,8 @@ const NewDisc = lazy(() => import('pages/found-music/new-disc'))
 const Friend = lazy(() => import('pages/friend'))
 const MyMusic = lazy(() => import('pages/my-music'))
 
+const SongDetail = lazy(() => import('pages/song-detail'))
+
 const Error404 = lazy(() => import('pages/404'))
 
 const routes = [
@@ -55,6 +57,9 @@ const routes = [
   },
   {
     path: '/friends', component: Friend
+  },
+  {
+    path: '/songs', component: SongDetail
   },
   {
     component: Error404

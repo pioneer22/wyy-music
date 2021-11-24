@@ -1,13 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 
 import { RightOutlined } from '@ant-design/icons'
 import './index.scss'
+import { connect } from 'react-redux'
+import { savePlayList } from '@/redux/actions/player-bar'
 
-export default class MusicList extends Component {
+class MusicList extends Component {
   render() {
-    const { name, coverImgUrl, tracks } = this.props
+    const { name, coverImgUrl, tracks, id } = this.props
     return (
       <div className="music-list-box">
         <div className="list-type">
@@ -31,7 +34,11 @@ export default class MusicList extends Component {
                   </a>
                   <div className="music-operator flex-column">
                     <i></i>
-                    <i></i>
+                    <i
+                      onClick={() => {
+                        this.props.savePlayList(musicObj.id)
+                      }}
+                    ></i>
                     <i></i>
                   </div>
                 </li>
@@ -39,13 +46,16 @@ export default class MusicList extends Component {
             })}
 
           <li className="music-item">
-            <a href="#">
+            <NavLink to={`/foundMusic/toplist?id=${id}`}>
               查看全部
               <RightOutlined style={{ fontSize: '12px' }} />
-            </a>
+            </NavLink>
           </li>
         </ol>
       </div>
     )
   }
 }
+export default connect((store) => ({ player: store.playerBar }), {
+  savePlayList,
+})(MusicList)

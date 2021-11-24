@@ -53,7 +53,7 @@ class TopList extends Component {
     topData.playList(rankObj.id).then((playlistObj) => {
       this.props.savePlayListDetail(playlistObj)
     })
-    this.props.history.push(`/home/foundMusic/toplist?id=${rankObj.id}`)
+    this.props.history.push(`/foundMusic/toplist?id=${rankObj.id}`)
   }
 
   render() {

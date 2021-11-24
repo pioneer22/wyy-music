@@ -52,7 +52,7 @@ export const hotSinger = getHotSinger({ limit: 5, offset: 0 }).then((res) => {
   if (res.code === 200) {
     return res.artists.map((item) => ({
       ...item,
-      picUrl: item.picUrl + '?param=80x80',
+      picUrl: item.img1v1Url + '?param=80x80',
     }))
   }
   return []

@@ -11,6 +11,7 @@ export default class NewDisc extends Component {
     total: 0,
     current: 1,
     area: 'ALL',
+    title: '全部',
   }
 
   componentDidMount() {
@@ -31,14 +32,21 @@ export default class NewDisc extends Component {
     req.allAlbum({ area }).then((album) => {
       this.setState({ ...album, current: 1 })
     })
+    albumArea.some((item) => {
+      if (area === item.type) {
+        this.setState({ title: item.name })
+        return true
+      }
+      return false
+    })
   }
 
   render() {
-    const { allAlbums, total, current } = this.state
+    const { allAlbums, total, current, title } = this.state
     return (
       <div className="w980 common-center new-disc-container">
         <TitleBar
-          titleObj={{ name: '全部新碟' }}
+          titleObj={{ name: title + '新碟' }}
           centerSlot={
             <>
               {albumArea.map((areaObj) => {

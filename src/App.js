@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Header from 'components/app-header'
 import Main from 'components/app-main'
 import Footer from 'components/app-footer'
+import PlayBar from 'pages/player-bar'
 
 import { BackTop } from 'antd';
 
@@ -24,6 +25,7 @@ export default class App extends Component {
         <Header />
         <Main />
         <Footer />
+        <PlayBar />
         <BackTop>
           <div style={style}>
             TOP

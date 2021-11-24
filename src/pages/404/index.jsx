@@ -3,9 +3,7 @@ import { Result, Button } from 'antd'
 import { RollbackOutlined } from '@ant-design/icons'
 
 export default memo(function ErrorPage(props) {
-  // props/state
   const { history } = props
-  // other function
   const handleGoHomeBack = () => {
     history.push('/')
   }

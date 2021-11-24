@@ -1,62 +1,70 @@
 .header-container {
   background-color: #242221;
-  .header-content{
+  .header-content {
     font-size: 14px;
-    .header-left{
-      .logo{
+    .header-left {
+      .logo {
         display: inline-block;
         width: 176px;
         height: 69px;
         background-position: 0 0;
         text-indent: -9999px;
       }
-  
-      .link-content{
+
+      .link-content {
         display: flex;
         color: #ccc;
       }
     }
-    
-    .header-right{
-      .search-container{
+
+    .header-right {
+      .search-container {
         padding: 0 10px;
         height: 30px;
         background-color: white;
         border-radius: 15px;
         box-sizing: border-box;
-        &>span{
+        position: relative;
+        & > span {
           display: block;
           border: 5px solid transparent;
           margin-top: 3px;
         }
 
-        &>input{
+        & > input {
           background-color: white;
           height: 26px;
         }
+
+        .search-result-box {
+          position: absolute;
+          top: calc(100% + 5px);
+          left: 0px;
+          z-index: 100;
+        }
       }
 
-      .author-center{
+      .author-center {
         display: inline-block;
         padding: 0 10px;
         font-size: 12px;
         height: 28px;
         line-height: 28px;
-        border: 1px solid #4F4F4F;
+        border: 1px solid #4f4f4f;
         color: #ccc;
         border-radius: 14px;
         margin-left: 15px;
         margin-right: 15px;
-        &:hover{
+        &:hover {
           border: 1px solid #ccc;
-          color:white;
+          color: white;
         }
       }
 
-      .login-btn{
+      .login-btn {
         display: inline-block;
         padding: 4px 12px;
-        &:hover{
+        &:hover {
           text-decoration: underline;
         }
       }
@@ -72,7 +80,7 @@
   text-align: center;
   font-size: 14px;
 
-  &:last-of-type::after{
+  &:last-of-type::after {
     position: absolute;
     content: '';
     width: 28px;
@@ -83,16 +91,16 @@
     right: -20px;
   }
 
-  &:hover{
+  &:hover {
     color: #fff;
     background-color: #000;
   }
 
-  &.header-link-active{
+  &.header-link-active {
     color: #fff;
     background-color: #000;
     position: relative;
-    &::after{
+    &::after {
       position: absolute;
       content: '';
       display: block;
@@ -100,9 +108,14 @@
       height: 0px;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
-      border-bottom: 8px solid #C20C0C;
+      border-bottom: 8px solid #c20c0c;
       bottom: 0px;
       left: calc(50% - 6px);
     }
   }
+}
+
+.red-line {
+  height: 5px;
+  background-color: #c20b0b;
 }

@@ -1,25 +1,26 @@
+/* eslint-disable no-useless-constructor */
 import React, { Component } from 'react'
-import { NavLink, Route, Redirect } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { foundLinks } from '@/common/page-data'
 
 import './index.scss'
-// import routes from './router'
-
 import { renderRoutes } from 'react-router-config'
-import routes from '@/router'
 export default class FoundMusic extends Component {
-  selectItem = (linkObj) => {
-    return (
-      <NavLink
-        key={linkObj.name}
-        to={linkObj.link}
-        className="found-link-item flex-column"
-        activeClassName="found-link-active"
-      >
-        <span>{linkObj.name}</span>
-      </NavLink>
-    )
+  constructor(props) {
+    super(props)
+    this.route = props.route
   }
+
+  selectItem = (linkObj) => (
+    <NavLink
+      key={linkObj.name}
+      to={linkObj.link}
+      className="found-link-item flex-column"
+      activeClassName="found-link-active"
+    >
+      <span>{linkObj.name}</span>
+    </NavLink>
+  )
 
   render() {
     return (
@@ -33,16 +34,7 @@ export default class FoundMusic extends Component {
             </div>
           </div>
         </div>
-
-        {/* {routes.map((item, index) => (
-          <Route
-            path={item.path}
-            component={item.component}
-            key={index}
-          ></Route>
-        ))}
-        <Redirect to="/foundMusic/recommend"></Redirect> */}
-        {renderRoutes(routes[1].routes)}
+        {renderRoutes(this.route.routes)}
       </div>
     )
   }

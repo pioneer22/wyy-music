@@ -157,7 +157,9 @@ class TopListDetail extends Component {
                                 ></path>
                               </svg>
 
-                              <span className="song-name">{songObj.name}</span>
+                              <span className="song-name ellipsis">
+                                {songObj.name}
+                              </span>
                             </div>
 
                             <div className="flex-column">

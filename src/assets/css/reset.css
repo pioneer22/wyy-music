@@ -257,3 +257,8 @@ main.content {
   min-height: 500px;
   padding: 40px;
 }
+
+.text-line:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

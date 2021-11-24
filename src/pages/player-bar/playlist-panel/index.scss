@@ -1,0 +1,133 @@
+.playlist-panel {
+  position: absolute;
+  left: -620%;
+  bottom: 51px;
+  width: 986px;
+  height: 301px;
+  border-radius: 7px;
+  color: #cccccc;
+  .playlist-header {
+    height: 40px;
+    background: url(~assets/img/playlist_bg.png) no-repeat 0 0;
+    &-left {
+      width: 555px;
+      padding: 0px 15px;
+      & > p {
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .text-line {
+        margin-left: 18px;
+        & > span {
+          padding-left: 4px;
+        }
+      }
+    }
+
+    &-right {
+      text-align: center;
+      position: relative;
+      width: 428px;
+      line-height: 40px;
+      & > div {
+        position: absolute;
+        right: 0px;
+        padding: 0 15px;
+        top: 0px;
+      }
+    }
+  }
+
+  .playlist-main {
+    height: 276px;
+    background: url(~assets/img/playlist_bg.png) repeat-y -1014px 0;
+    box-sizing: border-box;
+    &-left {
+      width: 561px;
+      padding-left: 2px;
+      overflow: auto;
+      position: relative;
+      &::after {
+        position: absolute;
+        content: '';
+        width: 6px;
+        height: 274px;
+        background: #000;
+        right: 0px;
+        top: 2px;
+      }
+
+      .playlist-item {
+        padding: 0 10px;
+        height: 28px;
+        margin-top: 2px;
+        .song-detail {
+          & > span {
+            padding: 0px 10px;
+            &:first-of-type {
+              min-width: 80px;
+              text-align: center;
+            }
+          }
+        }
+        .song-operator {
+          visibility: hidden;
+          font-size: 14px;
+          width: 70px;
+        }
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.4);
+          color: white;
+          .song-operator {
+            visibility: visible;
+          }
+        }
+        &.active {
+          background-color: rgba(0, 0, 0, 0.4);
+          color: white;
+        }
+      }
+    }
+
+    &-right {
+      width: 418px;
+      padding: 10px;
+      overflow: auto;
+      margin-left: 5px;
+      .lyric-content {
+        padding-bottom: 90px;
+        .lyric-line {
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          &.active {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  /* 滚动条 */
+  ::-webkit-scrollbar-thumb:horizontal {
+    /*水平滚动条的样式*/
+    width: 4px;
+    background-color: #9f9f9f;
+    -webkit-border-radius: 4px;
+  }
+  ::-webkit-scrollbar-track-piece {
+    background-color: #1a1a1a; /*滚动条的背景颜色*/
+    -webkit-border-radius: 0; /*滚动条的圆角宽度*/
+  }
+  ::-webkit-scrollbar {
+    width: 6px; /*滚动条的宽度*/
+    height: 4px; /*滚动条的高度*/
+  }
+  ::-webkit-scrollbar-thumb:vertical {
+    /*垂直滚动条的样式*/
+    height: 50px;
+    background-color: #9f9f9f;
+    -webkit-border-radius: 4px;
+    border: 2px solid #9f9f9f;
+  }
+}

@@ -72,3 +72,30 @@ export const footerIcons = [
   { name: '赞赏', link: 'https://music.163.com/web/reward' },
   { name: '视频奖励', link: 'https://music.163.com/#/login?targetUrl=https%3A%2F%2Fmusic.163.com%2Fuservideo%23%2Fplan' }
 ]
+
+// 默认音乐id
+export const SONG_PLAYLIST_ID = [298317, 26305547, 1463165983, 1804879213, 209760];
+
+// 默认音乐
+export const DEFAULT_SONG = {
+  name: '有何不可',
+  id: 167876,
+  ar: [
+    {
+      id: 5771,
+      name: '许嵩',
+      tns: [],
+      alias: [],
+    },
+  ],
+  al: {
+    id: 16953,
+    name: '自定义',
+    picUrl:
+      'https://p1.music.126.net/Md3RLH0fe2a_3dMDnfqoQg==/18590542604286213.jpg',
+    tns: [],
+    pic_str: '18590542604286213',
+    pic: 18590542604286212,
+  },
+  dt: 241840
+}

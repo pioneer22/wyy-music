@@ -12,9 +12,7 @@ import InSinger from 'components/app-main/in-singer'
 import HotAnchor from 'components/app-main/hot-anchor'
 
 import { RightOutlined } from '@ant-design/icons'
-
 import { hotRecommend } from '@/common/page-data'
-
 import { connect } from 'react-redux'
 import {
   savePersonalized,
@@ -101,7 +99,7 @@ class Recommend extends Component {
               centerSlot={hotRecommend.map((item) => {
                 return (
                   <NavLink
-                    to={`/home/foundMusic/playlist?cat=${item.name}`}
+                    to={`/foundMusic/playlist?cat=${item.name}`}
                     key={item.name}
                     className="link-active"
                   >
