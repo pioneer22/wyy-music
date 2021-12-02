@@ -1,10 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component, Fragment } from 'react'
-// import qs from 'querystring'
+import { NavLink } from 'react-router-dom'
 
-import { Image } from 'antd'
+import { Image, message } from 'antd'
 import { connect } from 'react-redux'
 import { msTurnMins } from 'utils/utils'
+import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
 
 import './index.scss'
 
@@ -18,9 +19,13 @@ function ImageCover() {
   )
 }
 class TopListDetail extends Component {
+  playMusic(id) {
+    this.props.savePlayList(id, true)
+    this.props.changePlayStatus(true)
+  }
+
   render() {
     const { playListDetail } = this.props.toplist
-
     return (
       <>
         {playListDetail ? (
@@ -128,7 +133,7 @@ class TopListDetail extends Component {
               </div>
               <div className="song-list-box">
                 {playListDetail &&
-                  playListDetail.tracks.map((songObj, index) => {
+                  playListDetail.tracks.slice(0, 100).map((songObj, index) => {
                     return (
                       <div className="song-item-box flex" key={songObj.id}>
                         <div className="song-item flex-center">
@@ -149,6 +154,9 @@ class TopListDetail extends Component {
                                 p-id="3990"
                                 width="26"
                                 height="26"
+                                onClick={() => {
+                                  this.playMusic(songObj.id)
+                                }}
                               >
                                 <path
                                   d="M512.3 928.1c-229.2 0-415-185.8-415-415s185.8-415 415-415 415 185.8 415 415-185.8 415-415 415z m2.4-75.3c186.2 0 337.2-151 337.2-337.2s-151-337.2-337.2-337.2-337.2 151-337.2 337.2 151 337.2 337.2 337.2z m-67.8-498.6l233.8 136.9c12.3 7.3 16.5 23.2 9.2 35.5-2.3 3.8-5.5 7-9.3 9.3L446.9 671.8c-12.4 7.2-28.3 3-35.5-9.3-2.3-4-3.5-8.5-3.5-13.1V376.5c0-14.3 11.6-25.9 26-25.9 4.5 0 9 1.2 13 3.6z"
@@ -157,14 +165,20 @@ class TopListDetail extends Component {
                                 ></path>
                               </svg>
 
-                              <span className="song-name ellipsis">
+                              <NavLink
+                                to={`/songs?id=${songObj.id}`}
+                                className="song-name ellipsis text-line"
+                              >
                                 {songObj.name}
-                              </span>
+                              </NavLink>
                             </div>
 
                             <div className="flex-column">
                               <button
-                                href=""
+                                onClick={() => {
+                                  this.props.savePlayList(songObj.id)
+                                  message.success('已添加~')
+                                }}
                                 className="sprite_icon2 add_btn"
                               ></button>
                             </div>
@@ -194,5 +208,8 @@ export default connect(
   (store) => ({
     toplist: store.toplist,
   }),
-  {}
+  {
+    savePlayList,
+    changePlayStatus,
+  }
 )(TopListDetail)

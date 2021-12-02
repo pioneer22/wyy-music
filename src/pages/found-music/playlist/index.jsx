@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 
 import { Popover, Pagination } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
+import { NavLink } from 'react-router-dom'
 
 import * as playlistData from './request'
 
@@ -22,7 +23,7 @@ export default class Playlist extends Component {
     // 分页
     const { catTitle } = this.state
     playlistData
-      .songTypeList({ limit: 50, offset: page * pageSize, cat: catTitle })
+      .songTypeList({ limit: 49, offset: page * pageSize + 1, cat: catTitle })
       .then((lists) => {
         this.setState({ ...lists, current: page })
       })
@@ -109,7 +110,9 @@ export default class Playlist extends Component {
         <div className="playlist-type-container">
           <div className="playlist-type-songs flex">
             {playlists.map((lists) => (
-              <MusicModule {...lists} key={lists.id}></MusicModule>
+              <NavLink key={lists.id} to={`/playlist?id=${lists.id}`}>
+                <MusicModule {...lists}></MusicModule>
+              </NavLink>
             ))}
           </div>
         </div>

@@ -5,14 +5,18 @@ const Recommend = lazy(() => import('pages/found-music/recommend'))
 const FoundMusic = lazy(() => import('pages/found-music'))
 const TopList = lazy(() => import('pages/found-music/toplist'))
 const PlayList = lazy(() => import('pages/found-music/playlist'))
-const AnchorStation = lazy(() => import('pages/found-music/anchor-station'))
+const Djradio = lazy(() => import('pages/found-music/djradio'))
 const Artist = lazy(() => import('pages/found-music/artist'))
-const NewDisc = lazy(() => import('pages/found-music/new-disc'))
+const Album = lazy(() => import('pages/found-music/album'))
 
 const Friend = lazy(() => import('pages/friend'))
 const MyMusic = lazy(() => import('pages/my-music'))
 
 const SongDetail = lazy(() => import('pages/song-detail'))
+const UserDetail = lazy(() => import('pages/user-detail'))
+const PlayListDetail = lazy(() => import('pages/playlist'))
+const AlbumDetail = lazy(() => import('pages/album'))
+const ArtistDetail = lazy(() => import('pages/artist'))
 
 const Error404 = lazy(() => import('pages/404'))
 
@@ -40,7 +44,7 @@ const routes = [
       },
       {
         path: '/foundMusic/djradio',
-        component: AnchorStation
+        component: Djradio
       },
       {
         path: '/foundMusic/artist',
@@ -48,7 +52,7 @@ const routes = [
       },
       {
         path: '/foundMusic/album',
-        component: NewDisc
+        component: Album
       }
     ]
   },
@@ -60,6 +64,18 @@ const routes = [
   },
   {
     path: '/songs', component: SongDetail
+  },
+  {
+    path: '/user', component: UserDetail
+  },
+  {
+    path: '/playlist', component: PlayListDetail
+  },
+  {
+    path: '/albums', component: AlbumDetail
+  },
+  {
+    path: '/artists', component: ArtistDetail
   },
   {
     component: Error404

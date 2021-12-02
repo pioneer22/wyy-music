@@ -3,6 +3,7 @@ import './index.scss'
 import TitleBar from 'components/title-bar'
 import { Pagination } from 'antd'
 import { albumArea } from '@/common/page-data'
+import { NavLink } from 'react-router-dom'
 import * as req from './request'
 
 export default class NewDisc extends Component {
@@ -67,13 +68,17 @@ export default class NewDisc extends Component {
         <div className="flex-between new-disc-box">
           {allAlbums.map((obj) => {
             return (
-              <div key={obj.id} className="new-disc-item">
+              <NavLink
+                to={`/albums?id=${obj.id}`}
+                key={obj.id}
+                className="new-disc-item"
+              >
                 <div>
                   <img src={`${obj.picUrl}?param=130x130`} alt="" />
                 </div>
                 <h3 className="ellipsis">{obj.name}</h3>
                 <p className="ellipsis">{obj.artist.name}</p>
-              </div>
+              </NavLink>
             )
           })}
         </div>

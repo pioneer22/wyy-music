@@ -18,7 +18,9 @@ export const SAVETOPLISTS = 'saveTopLists'; // 排行榜单
 
 export const SAVEPLAYLISTDETAIL = 'savePlayListDetail'; // 当前选择榜单具体内容
 
-export const SAVESEARCHSELECT = 'saveSearchSelect'; // 搜索框选中
+export const SEARCHSELECT = 'searchSelect'; // 搜索框选中
+
+export const SHOWLOGINFRAME = 'showLoginFrame'; // 是否登录弹框
 
 export const CURRENTSONG = 'currentSong'; // 当前播放歌曲
 
@@ -33,3 +35,7 @@ export const PLAYSONGINDEX = 'playSongIndex'; // 播放歌曲下标, 用于切�
 export const CURRENTLYRICINDEX = 'currentLyricIndex'; // 当前歌词下标
 
 export const FIRSTLOAD = 'firstLoad'; // 首次加载
+
+export const ISPLAY = 'isPlay'; // 正在播放
+
+export const USERMSG = 'userMsg';// 用户信息

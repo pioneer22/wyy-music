@@ -14,17 +14,20 @@ import {
   DownloadOutlined,
 } from '@ant-design/icons'
 
-import { delPlayList, saveCurrentSong } from '@/redux/actions/player-bar'
+import {
+  delPlayList,
+  saveCurrentSong,
+  changePlayStatus,
+} from '@/redux/actions/player-bar'
 
 class PlaylistPanel extends Component {
   lyricRef = React.createRef()
 
-  componentDidUpdate(newProps) {
-    let currentLyricIndex = this.props.playerBar.get('currentLyricIndex')
+  componentDidUpdate() {
+    let player = this.props.playerBar
+    let currentLyricIndex = player.get('currentLyricIndex')
     if (currentLyricIndex > 0 && currentLyricIndex < 3) return
-    if (currentLyricIndex !== this.props.lyricIndex) {
-      scrollTo(this.lyricRef.current, (currentLyricIndex - 3) * 30, 400)
-    }
+    scrollTo(this.lyricRef.current, (currentLyricIndex - 3) * 30, 300)
   }
 
   // 清空播放列表
@@ -33,6 +36,7 @@ class PlaylistPanel extends Component {
     this.props.delPlayList(ids)
   }
 
+  // 喜欢歌曲
   likeMusic() {
     message.success('喜欢了歌曲~')
   }
@@ -43,24 +47,26 @@ class PlaylistPanel extends Component {
       this.props.delPlayList(id)
       resolve()
     }).then(() => {
-      if (this.props.isPlay) {
+      if (this.props.playerBar.get('isPlay')) {
+        // 重置当前歌曲
         let songObj = this.props.playerBar.get('playList')[0]
         this.props.saveCurrentSong(songObj, 0)
       }
     })
   }
 
+  // 点击歌曲
   switchSong(songObj, index) {
     new Promise((resolve) => {
       this.props.saveCurrentSong(songObj, index)
       resolve()
     }).then(() => {
-      document.getElementById('audio').play()
+      this.props.changePlayStatus(true)
     })
   }
 
   render() {
-    const { isShowSlider, closeListPanel } = this.props
+    const { isShowSlider, closePanel } = this.props
     const player = this.props.playerBar
     const lyricList = player.get('lyricList')[player.get('playSongIndex')]
     const playSongIndex = player.get('playSongIndex')
@@ -92,7 +98,7 @@ class PlaylistPanel extends Component {
           <div className="playlist-header-right">
             {player.get('playList')[playSongIndex] &&
               player.get('playList')[playSongIndex].name}
-            <div onClick={closeListPanel}>
+            <div onClick={closePanel}>
               <CloseOutlined />
             </div>
           </div>
@@ -161,4 +167,5 @@ class PlaylistPanel extends Component {
 export default connect((store) => ({ playerBar: store.playerBar }), {
   delPlayList,
   saveCurrentSong,
+  changePlayStatus,
 })(PlaylistPanel)

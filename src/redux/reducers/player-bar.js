@@ -30,6 +30,7 @@ let initState = Map({
   playSongIndex: 0, // 当前歌曲下标
   currentLyricIndex: 0, // 歌词下标
   firstLoad: true, // 首次加载
+  isPlay: false, // 播放
 })
 
 export default function countReducer (preState = initState, action) {
@@ -52,6 +53,8 @@ export default function countReducer (preState = initState, action) {
       return preState.set(`${constants.CURRENTLYRICINDEX}`, action.currentLyricIndex);
     case constants.FIRSTLOAD:
       return preState.set(`${constants.FIRSTLOAD}`, action.firstLoad);
+    case constants.ISPLAY:
+      return preState.set(`${constants.ISPLAY}`, action.isPlay);
     default:
       return preState;
   }

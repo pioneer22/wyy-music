@@ -56,6 +56,15 @@ export const artist = [{
   name: '日本', type: 4
 }]
 
+// 歌手分类
+export const artists = [
+  { name: '华语', area: 7 },
+  { name: '欧美', area: 96 },
+  { name: '日本', area: 8 },
+  { name: '韩国', area: 16 },
+  { name: '其他', area: 0 }
+]
+
 // 底部链接
 export const musicLinks = [
   { name: '服务条款', link: 'https://st.music.163.com/official-terms/service' },
@@ -98,4 +107,54 @@ export const DEFAULT_SONG = {
     pic: 18590542604286212,
   },
   dt: 241840
+}
+
+// 登录
+export const loginPosition = [
+  {
+    style: { 'backgroundPosition': '-150px -670px' },
+    title: '微信登录'
+  },
+  {
+    style: { 'backgroundPosition': '-190px -670px' },
+    title: 'QQ登录'
+  },
+  {
+    style: { 'backgroundPosition': '-231px -670px' },
+    title: '微博登录'
+  },
+  {
+    style: { 'backgroundPosition': '-271px -670px' },
+    title: '网易邮箱登录'
+  }
+];
+
+// 专辑大小
+export const albumSize = {
+  '1': {
+    width: '118px',
+    height: '100px',
+    backgroundPosition: '0 -570px'
+  },
+  '2': {
+    width: '146px',
+    height: '120px',
+    backgroundPosition: '-171px -849px'
+  },
+  '3': {
+    width: '153px',
+    height: '130px',
+    backgroundPosition: '0 -846px'
+  },
+  '4': {
+    width: '209px',
+    height: '177px',
+    backgroundPosition: '0 -986px'
+  }
+}
+
+// 常用正则
+export const usualReg = {
+  phoneReg: /^1[3-9]\d{9}$/,
+  pwdReg: /[\w-]{6,18}/
 }

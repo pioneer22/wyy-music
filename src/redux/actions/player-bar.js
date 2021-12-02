@@ -11,7 +11,7 @@ export const saveCurrentSong = (currentSong, playSongIndex) => {
 }
 
 // 添加歌曲到播放列表
-export const savePlayList = (playIds) => {
+export const savePlayList = (playIds, isPlay = false) => {
   return (dispatch, getState) => {
     let playLists = getState().playerBar.get(constants.PLAYLIST);
     let playIdsList = playLists.length > 0 ? playLists.map(songObj => songObj.id) : [];
@@ -24,26 +24,39 @@ export const savePlayList = (playIds) => {
       else
         return;
     } else {
-      if (playIdsList.includes(playIds)) return;
+      if (playIdsList.includes(playIds) && isPlay) {
+        // 列表存在歌曲，立即播放
+        let index = playIdsList.indexOf(playIds)
+        dispatch({ type: constants.CURRENTSONG, currentSong: playLists[index] });
+        dispatch({ type: constants.PLAYSONGINDEX, playSongIndex: index });
+        return;
+      }
+      if (playIdsList.includes(playIds)) {
+        return;
+      }
     }
 
     // 获取歌曲
     global.getSongDetail(newIds).then(res => {
       if (res.code === 200) {
-        // dispatch({ type: constants.PLAYLIST, playList: [...playLists, ...res.songs] });
         res.songs.forEach(song => {
           global.songWords(song.id).then(res => {
             if (res.code === 200) {
               let lyricList = getState().playerBar.get(constants.LYRICLIST);
               playLists = getState().playerBar.get(constants.PLAYLIST);
-              dispatch({ type: constants.PLAYLIST, playList: [...playLists, song] });
-              dispatch({ type: constants.LYRICLIST, lyricList: [...lyricList, { id: song.id, words: lyricsSplit(res.lrc.lyric) }] });
+              dispatch({ type: constants.PLAYLIST, playList: isPlay ? [song, ...playLists] : [...playLists, song] });
+              dispatch({ type: constants.LYRICLIST, lyricList: isPlay ? [{ id: song.id, words: lyricsSplit(res.lrc.lyric) }, ...lyricList] : [...lyricList, { id: song.id, words: lyricsSplit(res.lrc.lyric) }] });
             }
           })
         })
+        // 首次加载
         if (getState().playerBar.get(constants.FIRSTLOAD)) {
-          dispatch({ type: constants.CURRENTSONG, currentSong: res.songs[0] });
           dispatch({ type: constants.FIRSTLOAD, firstLoad: false });
+        }
+
+        if (isPlay) {
+          dispatch({ type: constants.CURRENTSONG, currentSong: res.songs[0] });
+          dispatch({ type: constants.PLAYSONGINDEX, playSongIndex: 0 });
         }
       }
     })
@@ -71,3 +84,6 @@ export const changeLyricList = (lyricList) => ({ type: constants.LYRICLIST, lyri
 
 // 修改歌词下标
 export const changeCurrentLyricIndex = (currentLyricIndex) => ({ type: constants.CURRENTLYRICINDEX, currentLyricIndex });
+
+// 切换播放状态
+export const changePlayStatus = (isPlay) => ({ type: constants.ISPLAY, isPlay });

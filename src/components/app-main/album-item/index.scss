@@ -1,0 +1,13 @@
+.album-item {
+  p {
+    &:first-of-type {
+      margin: 5px 0 2px;
+      font-size: 14px;
+    }
+    &:last-of-type {
+      font-size: 12px;
+      color: #666666;
+      line-height: 1;
+    }
+  }
+}

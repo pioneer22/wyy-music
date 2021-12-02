@@ -27,6 +27,7 @@ export const personalized = getPersonalized().then((res) => {
 export const newSet = getNewSet().then((res) => {
   if (res.code === 200) {
     let albums = res.albums.map(item => ({
+      aid: item.id,
       songName: item.name,
       ...item.artist,
       picUrlSet: item.picUrl + '?param=100x100',

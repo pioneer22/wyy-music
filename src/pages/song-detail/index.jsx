@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react'
 import qs from 'querystring'
 import './index.scss'
 
+import { NavLink } from 'react-router-dom'
 import TitleBar from 'components/title-bar'
 import { Pagination, Button } from 'antd'
 import { UpOutlined, DownOutlined } from '@ant-design/icons'
@@ -11,9 +12,12 @@ import { connect } from 'react-redux'
 import { getPlayUrl } from 'utils/utils'
 import songDetail from './request'
 
+import { saveSearchSelect } from '@/redux/actions/header'
+import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
 class SongDetail extends Component {
   state = {
-    albumUrl: '',
+    albumUrl:
+      'https://p3.music.126.net/SUeqMM8HOIpHv9Nhl9qt9w==/109951165647004069.jpg?param=132x132',
     id: '',
     words: [],
     show: false,
@@ -25,12 +29,12 @@ class SongDetail extends Component {
   }
 
   componentDidMount() {
-    this.reqAlbum(this.props)
+    this.reqAlbum()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.location.search !== this.props.location.search) {
-      this.reqAlbum(nextProps)
+      this.reqAlbum()
     }
   }
 
@@ -40,29 +44,39 @@ class SongDetail extends Component {
     }
   }
 
-  reqAlbum(props) {
-    const { album } = props.header.searchSelect
-    album.id &&
-      songDetail.reqAlbum(album.id).then((albumUrl) => {
-        this.setState(albumUrl)
-      })
-
-    const { id } = qs.parse(props.location.search.slice(1))
+  reqAlbum() {
+    const { id } = qs.parse(this.props.location.search.slice(1))
     this.setState({ id })
 
-    if (id) {
-      songDetail.reqSongWords(id).then((words) => {
-        this.setState(words)
-      })
+    const req = () => {
+      const { album } = this.props.header.searchSelect
+      album.id &&
+        songDetail.reqAlbum(album.id).then((albumUrl) => {
+          this.setState(albumUrl)
+        })
 
-      songDetail.reqSimiSong(id).then((simiSongs) => {
-        this.setState({ simiSongs })
-      })
+      if (id) {
+        songDetail.reqSongWords(id).then((words) => {
+          this.setState(words)
+        })
 
-      songDetail.reqComment({ id }).then((params) => {
-        this.setState(params)
-      })
+        songDetail.reqSimiSong(id).then((simiSongs) => {
+          this.setState({ simiSongs })
+        })
+
+        songDetail.reqComment({ id }).then((params) => {
+          this.setState(params)
+        })
+      }
     }
+    songDetail
+      .reqSongDetail({ keywords: id })
+      .then((res) => {
+        this.props.saveSearchSelect(res)
+      })
+      .then(() => {
+        req()
+      })
   }
 
   changePage(page, pageSize) {
@@ -75,8 +89,13 @@ class SongDetail extends Component {
       })
   }
 
+  playMusic(id) {
+    this.props.savePlayList(id, true)
+    this.props.changePlayStatus(true)
+  }
+
   render() {
-    const { name, artists, album } = this.props.header.searchSelect
+    const currentSelect = this.props.header?.searchSelect
     const {
       albumUrl,
       words,
@@ -100,19 +119,22 @@ class SongDetail extends Component {
             <div className="song-detail-box">
               <div className="song-detail-name">
                 <span className="sprite_icon2"></span>
-                <span>{name}</span>
+                <span>{currentSelect && currentSelect.name}</span>
               </div>
               <p className="song-introduce">
                 <span>歌手:</span>
                 <span className="ellipsis">
-                  {artists &&
-                    artists.map((nameObj, index) => {
+                  {currentSelect &&
+                    currentSelect.artists &&
+                    currentSelect.artists.map((nameObj, index) => {
                       return (
                         <Fragment key={nameObj.id}>
                           <span className="singer-name text-line">
                             {nameObj.name}
                           </span>
-                          {index === artists.length - 1 ? '' : ' / '}
+                          {index === currentSelect.artists.length - 1
+                            ? ''
+                            : ' / '}
                         </Fragment>
                       )
                     })}
@@ -120,7 +142,11 @@ class SongDetail extends Component {
               </p>
               <p className="song-introduce">
                 <span>所属专辑:</span>
-                <span className="singer-name text-line">{album.name}</span>
+                <span className="singer-name text-line">
+                  {currentSelect &&
+                    currentSelect.album &&
+                    currentSelect.album.name}
+                </span>
               </p>
               <div className="flex song-operator">
                 <div className="sprite_button play">
@@ -138,9 +164,9 @@ class SongDetail extends Component {
                   </i>
                 </div>
 
-                <div class="sprite_button comment">
-                  <i class="sprite_button inner">
-                    <em class="sprite_button favorite-icon"></em>({total})
+                <div className="sprite_button comment">
+                  <i className="sprite_button inner">
+                    <em className="sprite_button favorite-icon"></em>({total})
                   </i>
                 </div>
               </div>
@@ -197,7 +223,7 @@ class SongDetail extends Component {
               </div>
             </div>
 
-            <div className="sd-title">精彩评论</div>
+            {hotComments && <div className="sd-title">精彩评论</div>}
             <div className="comment-box">
               {hotComments.map((obj, index) => {
                 return (
@@ -327,7 +353,12 @@ class SongDetail extends Component {
             return (
               <div key={obj.id} className="flex-between-center simi-song">
                 <div className="simi-song-name">
-                  <p>{obj.name}</p>
+                  <NavLink
+                    to={`/songs?id=${obj.id}`}
+                    className="text-line ellipsis"
+                  >
+                    {obj.name}
+                  </NavLink>
                   <div className="ellipsis">
                     {obj.artists.map((item, index) => {
                       return (
@@ -341,7 +372,12 @@ class SongDetail extends Component {
                     })}
                   </div>
                 </div>
-                <div className="play-icon"></div>
+                <div
+                  className="play-icon"
+                  onClick={() => {
+                    this.playMusic(obj.id)
+                  }}
+                ></div>
               </div>
             )
           })}
@@ -351,4 +387,8 @@ class SongDetail extends Component {
   }
 }
 
-export default connect((store) => ({ header: store.header }), {})(SongDetail)
+export default connect((store) => ({ header: store.header }), {
+  saveSearchSelect,
+  savePlayList,
+  changePlayStatus,
+})(SongDetail)

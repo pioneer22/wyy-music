@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Carousel } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 
+import { NavLink } from 'react-router-dom'
 import './index.scss'
 
 const carouserBtn = {
@@ -33,13 +34,15 @@ export default class Putaway extends Component {
                 <div key={index} className="put-img-bar">
                   {putArr.map((putObj) => {
                     return (
-                      <div key={putObj.id} className="put-img-box">
-                        <div className="put-img-conatiner">
-                          <img src={putObj.picUrlSet}></img>
+                      <NavLink key={putObj.id} to={`/albums?id=${putObj.aid}`}>
+                        <div className="put-img-box">
+                          <div className="put-img-conatiner">
+                            <img src={putObj.picUrlSet}></img>
+                          </div>
+                          <p className="ellipsis">{putObj.songName}</p>
+                          <p className="ellipsis">{putObj.name}</p>
                         </div>
-                        <p className="ellipsis">{putObj.songName}</p>
-                        <p className="ellipsis">{putObj.name}</p>
-                      </div>
+                      </NavLink>
                     )
                   })}
                 </div>

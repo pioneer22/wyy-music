@@ -1,14 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
-
-import { RightOutlined } from '@ant-design/icons'
 import './index.scss'
+import { NavLink } from 'react-router-dom'
+import { RightOutlined } from '@ant-design/icons'
+import { message } from 'antd'
+
 import { connect } from 'react-redux'
-import { savePlayList } from '@/redux/actions/player-bar'
+import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
 
 class MusicList extends Component {
+  playMusic(id) {
+    this.props.savePlayList(id, true)
+    this.props.changePlayStatus(true)
+  }
+
   render() {
     const { name, coverImgUrl, tracks, id } = this.props
     return (
@@ -29,17 +35,26 @@ class MusicList extends Component {
               return (
                 <li key={musicObj.id} className="music-item">
                   <span>{index + 1}</span>
-                  <a href="#" className="ellipsis">
+                  <NavLink to={`/songs?id=${musicObj.id}`} className="ellipsis">
                     {musicObj.name}
-                  </a>
+                  </NavLink>
                   <div className="music-operator flex-column">
-                    <i></i>
                     <i
                       onClick={() => {
-                        this.props.savePlayList(musicObj.id)
+                        this.playMusic(musicObj.id)
                       }}
                     ></i>
-                    <i></i>
+                    <i
+                      onClick={() => {
+                        this.props.savePlayList(musicObj.id, false)
+                        message.success('已添加~')
+                      }}
+                    ></i>
+                    <i
+                      onClick={() => {
+                        message.warn('收藏~未做~')
+                      }}
+                    ></i>
                   </div>
                 </li>
               )
@@ -58,4 +73,5 @@ class MusicList extends Component {
 }
 export default connect((store) => ({ player: store.playerBar }), {
   savePlayList,
+  changePlayStatus,
 })(MusicList)

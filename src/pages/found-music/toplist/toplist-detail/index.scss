@@ -41,6 +41,10 @@
     margin-right: -10px;
     padding-top: 30px;
 
+    .sprite_button {
+      cursor: pointer;
+    }
+
     .play {
       position: relative;
       color: #fff;
@@ -228,6 +232,9 @@
           &:nth-child(2) {
             .song-detail {
               width: 242px;
+              .song-name {
+                width: 190px;
+              }
             }
           }
         }

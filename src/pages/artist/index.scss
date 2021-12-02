@@ -1,0 +1,173 @@
+.artist-detail {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-right: 30px;
+  &-left {
+    padding-top: 20px;
+    width: 670px;
+    border-right: 1px solid #ddd;
+    h2 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .cover-box {
+      position: relative;
+      img {
+        width: 640px;
+        height: 300px;
+      }
+
+      .user-btn {
+        position: absolute;
+        right: 40px;
+        bottom: 10px;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .personal-box {
+      width: 640px;
+      padding-bottom: 40px;
+      .song-item {
+        height: 37px;
+        line-height: 37px;
+        font-size: 12px;
+        color: #333;
+        &:nth-of-type(odd) {
+          background-color: #f7f7f7;
+        }
+
+        & > div {
+          padding: 0px 10px;
+          &:nth-child(1) {
+            width: 74px;
+            color: #999999;
+          }
+          &:nth-child(2) {
+            width: 280px;
+            .opera-box {
+              display: none;
+            }
+          }
+          &:nth-child(3) {
+            width: 100px;
+          }
+          &:nth-child(4) {
+            width: 186px;
+          }
+        }
+
+        &:hover {
+          .opera-box {
+            display: inline-block !important;
+          }
+        }
+      }
+
+      .album-items {
+        padding-bottom: 30px;
+        &:not(:nth-child(4n)) {
+          margin-right: 18px;
+        }
+      }
+
+      .mv-box {
+        .mv-item {
+          padding-bottom: 30px;
+          & > div {
+            position: relative;
+            img {
+              width: 137px;
+              height: 103px;
+            }
+
+            i {
+              display: block;
+              width: 36px;
+              height: 36px;
+              background-position: 0 -204px;
+              position: absolute;
+              top: calc(50% - 18px);
+              left: calc(50% - 18px);
+              &:hover {
+                background-position: -40px -204px;
+              }
+            }
+          }
+          &:not(:nth-child(4n)) {
+            margin-right: 30px;
+          }
+          p {
+            width: 137px;
+            padding-top: 4px;
+          }
+        }
+      }
+
+      .intro-box {
+        .intro-title {
+          margin: 20px 0 8px 0;
+          color: #333;
+          font-size: 14px;
+          padding-left: 14px;
+          position: relative;
+          font-weight: bold;
+          font-size: 14px;
+          &::after {
+            position: absolute;
+            content: '';
+            width: 3px;
+            height: calc(100% - 4px);
+            background-color: #c10d0c;
+            top: 2px;
+            left: 0;
+          }
+        }
+        p {
+          line-height: 25px;
+          color: #666;
+          text-indent: 2em;
+          font-size: 12px;
+        }
+        .text-p {
+          text-indent: 0em;
+        }
+      }
+    }
+  }
+
+  &-right {
+    flex: 1;
+    padding: 20px 0px 20px 30px;
+    h3 {
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      width: 100%;
+      color: #333;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .simi-box {
+      & > li {
+        margin-top: 16px;
+        img {
+          width: 60px;
+          height: 60px;
+        }
+        p {
+          width: 60px;
+          text-align: center;
+          padding: 4px 0px 2px;
+        }
+        &:not(:nth-child(3n)) {
+          margin-right: 14px;
+        }
+      }
+    }
+  }
+}

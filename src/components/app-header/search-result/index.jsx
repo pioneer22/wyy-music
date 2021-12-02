@@ -22,12 +22,7 @@ export default class SearchResult extends Component {
                             to={`/${songObj.key}?id=${song.id}`}
                             key={song.id}
                             className="search-result-url"
-                            onClick={() =>
-                              this.props.toSearchDetail({
-                                ...song,
-                                key: songObj.key,
-                              })
-                            }
+                            onClick={this.props.toSearchDetail}
                           >
                             {song.name}
                           </NavLink>

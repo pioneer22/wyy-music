@@ -16,6 +16,9 @@ export const getHotSinger = (params) => request({ url: '/top/artists', params })
 
 export const getHotArtist = (type) => request({ url: '/toplist/artist', params: { type } }); //歌手榜  type: 1: 华语 2: 欧美 3: 韩国 4: 日本
 
+// 歌手分类 limit,offset ,initial: 字母开头, type: -1:全部 1:男歌手 2:女歌手 3:乐队, area: -1:全部, 7华语, 96欧美, 8:日本, 16韩国, 0:其他
+export const getArtist = (params) => request({ url: '/artist/list', params });
+
 export const getHotAnchor = (limit = 5) => request({ url: '/dj/toplist/popular', params: { limit } }); // 获取热门主播
 
 export const getTopList = () => request({ url: '/toplist' }); // 获取排行榜

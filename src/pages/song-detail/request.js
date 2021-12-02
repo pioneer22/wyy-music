@@ -1,10 +1,10 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable import/no-anonymous-default-export */
-import { getAlbum, songWords, simiSong, getSongComment, getSongUrl } from '@/api/global'
+import { getAlbumDetail, songWords, simiSong, getSongComment, getSongUrl, searchKeywords } from '@/api/global'
 import { delDate } from 'utils/utils'
 
 export default {
-  reqAlbum: (id) => getAlbum(id).then((res) => {
+  reqAlbum: (id) => getAlbumDetail(id).then((res) => {
     if (res.code === 200) {
       return { albumUrl: res.album.picUrl + '?param=132y132' }
     }
@@ -41,6 +41,12 @@ export default {
   reqSongUrl: (id) => getSongUrl(id).then(res => {
     if (res.code === 200) {
       return res.data[0]
+    }
+  }),
+
+  reqSongDetail: (params) => searchKeywords(params).then(res => {
+    if (res.code === 200) {
+      return res.result.songs[0]
     }
   })
 }

@@ -1,0 +1,63 @@
+.user {
+  .user-basic {
+    padding-bottom: 25px;
+    .user-avatar {
+      width: 188px;
+      height: 188px;
+      padding: 3px;
+      border: 1px solid #d5d5d5;
+    }
+
+    .user-content {
+      padding-left: 40px;
+      flex: 1;
+      &-top {
+        padding-bottom: 12px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        h3 {
+          font-size: 22px;
+          margin-right: 15px;
+        }
+      }
+
+      &-center {
+        color: #666;
+        line-height: 1;
+        margin-bottom: 15px;
+        li {
+          padding-right: 40px;
+          p {
+            font-size: 24px;
+            margin-bottom: 6px;
+          }
+          &:not(:first-child) {
+            padding-left: 20px;
+            border-left: 1px solid #ddd;
+          }
+        }
+      }
+
+      &-bottom {
+        color: #666666;
+        p {
+          padding: 4px 0px;
+        }
+      }
+    }
+  }
+
+  .user-playlist {
+    padding-top: 20px;
+    .playlist-item {
+      .playlist-cover {
+        img {
+          border: 1px solid #ddd;
+        }
+      }
+      &:not(:nth-of-type(5n + 1)) {
+        margin-left: 47px;
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@ import InSinger from 'components/app-main/in-singer'
 import HotAnchor from 'components/app-main/hot-anchor'
 
 import { RightOutlined } from '@ant-design/icons'
-import { hotRecommend } from '@/common/page-data'
+import { hotRecommend, headerLinks } from '@/common/page-data'
 import { connect } from 'react-redux'
 import {
   savePersonalized,
@@ -23,7 +23,6 @@ import {
 } from '@/redux/actions/recommend'
 
 import * as recData from './request'
-
 import './index.scss'
 class Recommend extends Component {
   state = {
@@ -115,7 +114,11 @@ class Recommend extends Component {
             ></TitleBar>
             <div className="hot-content common-content flex-column">
               {personalizeds.map((perObj) => {
-                return <MusicModule {...perObj} key={perObj.id}></MusicModule>
+                return (
+                  <NavLink key={perObj.id} to={`/playlist?id=${perObj.id}`}>
+                    <MusicModule {...perObj}></MusicModule>
+                  </NavLink>
+                )
               })}
             </div>
 
@@ -148,21 +151,36 @@ class Recommend extends Component {
             </div>
           </div>
           <div className="recommend-content-right">
-            <NoLogin></NoLogin>
+            {Object.keys(this.props.header.userMsg).length > 0 ? (
+              ''
+            ) : (
+              <NoLogin></NoLogin>
+            )}
 
             <div className="singer-box">
               <div className="in-singer flex-between">
                 <span>入驻歌手</span>
-                <a href="#">
+                <NavLink to="/foundMusic/artist">
                   查看全部
                   <RightOutlined style={{ fontSize: '12px' }} />
-                </a>
+                </NavLink>
               </div>
               {hotSingerLists &&
                 hotSingerLists.map((hsObj) => {
-                  return <InSinger {...hsObj} key={hsObj.id}></InSinger>
+                  return (
+                    <NavLink to={`/artists?id=${hsObj.id}`} key={hsObj.id}>
+                      <InSinger {...hsObj}></InSinger>
+                    </NavLink>
+                  )
                 })}
-              <div className="be-singer-btn">申请成为网易音乐人</div>
+              <div
+                className="be-singer-btn"
+                onClick={() => {
+                  window.open(headerLinks[4].link)
+                }}
+              >
+                申请成为网易音乐人
+              </div>
             </div>
 
             <div className="singer-box">
@@ -181,10 +199,13 @@ class Recommend extends Component {
   }
 }
 
-export default connect((store) => ({ recommend: store.recommend }), {
-  savePersonalized,
-  saveNewSet,
-  savePlayList,
-  saveHotSinger,
-  saveHotAnchor,
-})(Recommend)
+export default connect(
+  (store) => ({ recommend: store.recommend, header: store.header }),
+  {
+    savePersonalized,
+    saveNewSet,
+    savePlayList,
+    saveHotSinger,
+    saveHotAnchor,
+  }
+)(Recommend)

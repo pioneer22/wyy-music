@@ -4,8 +4,10 @@ export const delNum = (num) => {
   let newNum = '';
   if (num > 100000000) {
     newNum = (num / 100000000).toFixed(1) + '亿'
-  } else if (num > num / 10000) {
+  } else if (num > 10000 && (num > num / 10000)) {
     newNum = (num / 10000).toFixed(1) + '万'
+  } else {
+    newNum = num;
   }
   return newNum;
 }
@@ -20,6 +22,8 @@ export const delDate = (dateTime, type = 0) => {
       return `${time.getFullYear()}年${time.getMonth() + 1}月${time.getDate()}日`;
     case 2:
       return `${time.getMonth() + 1}月${time.getDate()}日 ${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+    case '-':
+      return `${time.getFullYear()}${type}${(time.getMonth() + 1 + '').padStart(2, 0)}${type}${(time.getDate() + '').padStart(2, 0)}`;
     default:
       return time;
   }
@@ -72,13 +76,13 @@ export const lyricsSplit = (lyrics) => {
  *  */
 export const scrollTo = (elem, to, duration) => {
   if (duration < 0) return;
-  // 目标-当前距离的卷曲的top
+  // 目标-当前距离的top
   var difference = to - elem.scrollTop;
   var perTick = difference / duration * 10;
 
   setTimeout(function () {
     elem.scrollTop = elem.scrollTop + perTick;
-    if (elem.scrollTop >= to) return;
+    if (elem.scrollTop === to) return;
     scrollTo(elem, to, duration - 10);
-  }, 10);
+  }, 30);
 }
