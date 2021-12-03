@@ -1,7 +1,7 @@
-import { SAVESELECTLIST, SAVETOPLISTS, SAVEPLAYLISTDETAIL } from '../constant';
+import { SELECTLIST, TOPLISTS, PLAYLISTDETAIL } from '../constant';
 
-export const saveSelectList = data => ({ type: SAVESELECTLIST, data });
+export const saveSelectList = selectList => ({ type: SELECTLIST, selectList });
 
-export const saveTopLists = data => ({ type: SAVETOPLISTS, data });
+export const saveTopLists = topLists => ({ type: TOPLISTS, topLists });
 
-export const savePlayListDetail = data => ({ type: SAVEPLAYLISTDETAIL, data });
+export const savePlayListDetail = playListDetail => ({ type: PLAYLISTDETAIL, playListDetail });

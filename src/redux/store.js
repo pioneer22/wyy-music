@@ -12,7 +12,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
 // 引入汇总之后的reducer
-import allResource from "./reducers"
+import allResources from "./reducers"
 
 // 暴露store
-export default createStore(allResource, composeWithDevTools(applyMiddleware(thunk),))
+export default createStore(allResources, composeWithDevTools(applyMiddleware(thunk),))

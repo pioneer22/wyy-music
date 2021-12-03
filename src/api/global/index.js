@@ -51,3 +51,6 @@ export const getArtistDetail = (id) => request({ url: '/artist/detail', params: 
 export const getSimiArtist = (id) => request({ url: '/simi/artist', params: { id } }); // 获取相似歌手
 
 export const checkMusic = (id) => request({ url: '/check/music', params: { id } }); // 监测歌曲是否有用
+
+// 新建歌单 name, 可选: privacy  10为隐私歌单, type: 歌单类型 默认'NORMAL',传 'VIDEO'则为视频歌单,传 'SHARED'则为共享歌单
+export const createMusicList = (params) => request({ url: '/playlist/create', params });

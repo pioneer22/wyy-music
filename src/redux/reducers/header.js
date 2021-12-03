@@ -1,9 +1,10 @@
-import { SEARCHSELECT, SHOWLOGINFRAME, USERMSG } from "../constant";
+import { SEARCHSELECT, SHOWLOGINFRAME, USERMSG, MUSICLIST } from "../constant";
 
 const initState = {
   searchSelect: {},
   showLoginFrame: false,
-  userMsg: {}
+  userMsg: {},
+  musicList: []
 };
 export default function countReducer (preState = initState, action) {
   // 根据type决定如何加工数据
@@ -14,6 +15,8 @@ export default function countReducer (preState = initState, action) {
       return { ...preState, [SHOWLOGINFRAME]: action[SHOWLOGINFRAME] };
     case USERMSG:
       return { ...preState, [USERMSG]: action[USERMSG] };
+    case MUSICLIST:
+      return { ...preState, [MUSICLIST]: action[MUSICLIST] };
     default:
       return preState;
   }

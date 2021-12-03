@@ -17,7 +17,7 @@ import { connect } from 'react-redux'
 import {
   savePersonalized,
   saveNewSet,
-  savePlayList,
+  saveList,
   saveHotSinger,
   saveHotAnchor,
 } from '@/redux/actions/recommend'
@@ -52,7 +52,7 @@ class Recommend extends Component {
       recData.allLists(3779629),
     ]).then((res) => {
       this.setState({ ycLists: res[0], bsLists: res[1], xgLists: res[2] })
-      this.props.savePlayList({
+      this.props.saveList({
         ycLists: res[0],
         bsLists: res[1],
         xgLists: res[2],
@@ -204,7 +204,7 @@ export default connect(
   {
     savePersonalized,
     saveNewSet,
-    savePlayList,
+    saveList,
     saveHotSinger,
     saveHotAnchor,
   }

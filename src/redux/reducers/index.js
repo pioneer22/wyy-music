@@ -4,7 +4,6 @@
 
 // 引入为Recommend组件服务的reducer
 import recommend from './recommend'
-import banner from './banner'
 import toplist from './toplist'
 import header from './header'
 import playerBar from './player-bar'
@@ -15,7 +14,6 @@ import { combineReducers } from 'redux'
 // 汇总所有reducers
 export default combineReducers({
   recommend,
-  banner,
   toplist,
   header,
   playerBar

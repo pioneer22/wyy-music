@@ -1,12 +1,14 @@
-import { SAVEPERSONALIZED, SAVENEWSET, SAVEPLAYLIST, SAVEHOTSINGER, SAVEHOTANCHER } from "../constant";
+import { BANNER, PERSONALIZED, NEWSET, LIST, HOTSINGER, HOTANCHOR } from "../constant";
 
 // 同步action，就是指action的值为Object类型的一般对象
-export const savePersonalized = (data) => ({ type: SAVEPERSONALIZED, data });
+export const saveBanner = (banner) => ({ type: BANNER, banner });
 
-export const saveNewSet = data => ({ type: SAVENEWSET, data });
+export const savePersonalized = (personalized) => ({ type: PERSONALIZED, personalized });
 
-export const savePlayList = data => ({ type: SAVEPLAYLIST, data });
+export const saveNewSet = newSet => ({ type: NEWSET, newSet });
 
-export const saveHotSinger = data => ({ type: SAVEHOTSINGER, data });
+export const saveList = list => ({ type: LIST, list });
 
-export const saveHotAnchor = data => ({ type: SAVEHOTANCHER, data });
+export const saveHotSinger = hotSinger => ({ type: HOTSINGER, hotSinger });
+
+export const saveHotAnchor = hotAnchor => ({ type: HOTANCHOR, hotAnchor });

@@ -27,18 +27,6 @@
       width: 153px;
       margin-right: 10px;
       padding-bottom: 30px;
-      & > div {
-        width: 153px;
-        background: url(~assets/img/sprite_cover.png) no-repeat 0 -846px;
-      }
-
-      h3 {
-        padding-top: 6px;
-      }
-
-      p {
-        color: #666;
-      }
 
       &:nth-child(5n) {
         margin-right: 0px;

@@ -1,22 +1,31 @@
-import { SAVEPERSONALIZED, SAVENEWSET, SAVEPLAYLIST, SAVEHOTSINGER, SAVEHOTANCHER } from "../constant";
+import { BANNER, PERSONALIZED, NEWSET, LIST, HOTSINGER, HOTANCHOR } from "../constant";
 
-const initState = {};
+const initState = {
+  banner: {},
+  newSet: [],
+  personalized: [],
+  hotAnchor: [],
+  hotSinger: [],
+  list: {}
+};
 export default function countReducer (preState = initState, action) {
   // 从action对象中获取type, data
-  const { type, data } = action;
+  const { type } = action;
 
   // 根据type决定如何加工数据
   switch (type) {
-    case SAVEPERSONALIZED:
-      return { ...preState, personalized: data };
-    case SAVENEWSET:
-      return { ...preState, newSet: data };
-    case SAVEPLAYLIST:
-      return { ...preState, playList: data };
-    case SAVEHOTSINGER:
-      return { ...preState, hotSinger: data };
-    case SAVEHOTANCHER:
-      return { ...preState, hotAnchor: data };
+    case BANNER:
+      return { ...preState, [BANNER]: action[BANNER] };
+    case PERSONALIZED:
+      return { ...preState, [PERSONALIZED]: action[PERSONALIZED] };
+    case NEWSET:
+      return { ...preState, [NEWSET]: action[NEWSET] };
+    case LIST:
+      return { ...preState, [LIST]: action[LIST] };
+    case HOTSINGER:
+      return { ...preState, [HOTSINGER]: action[HOTSINGER] };
+    case HOTANCHOR:
+      return { ...preState, [HOTANCHOR]: action[HOTANCHOR] };
     default:
       return preState;
   }

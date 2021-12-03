@@ -9,8 +9,6 @@ let initState = Map({
       {
         id: 5771,
         name: '许嵩',
-        tns: [],
-        alias: [],
       },
     ],
     al: {

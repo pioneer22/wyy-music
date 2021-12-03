@@ -1,6 +1,7 @@
 import * as constants from '../constant'
 import * as global from '@/api/global'
 import { lyricsSplit } from 'utils/utils'
+import { message } from 'antd'
 
 // 保存歌曲
 export const saveCurrentSong = (currentSong, playSongIndex) => {
@@ -32,7 +33,10 @@ export const savePlayList = (playIds, isPlay = false) => {
         return;
       }
       if (playIdsList.includes(playIds)) {
+        message.warn('播放列表已存在歌曲~')
         return;
+      } else {
+        message.success('已添加歌曲~')
       }
     }
 

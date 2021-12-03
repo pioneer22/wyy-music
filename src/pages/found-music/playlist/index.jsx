@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
-
+import qs from 'querystring'
 import { Popover, Pagination } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
@@ -12,6 +12,7 @@ import MusicModule from 'components/music-module'
 import './index.scss'
 export default class Playlist extends Component {
   selectSongList(catTitle) {
+    this.props.history.push('/foundMusic/playlist?cat=' + catTitle)
     let params =
       catTitle === '全部' ? { limit: 50 } : { limit: 50, cat: catTitle }
     playlistData.songTypeList(params).then((lists) => {
@@ -23,7 +24,7 @@ export default class Playlist extends Component {
     // 分页
     const { catTitle } = this.state
     playlistData
-      .songTypeList({ limit: 49, offset: page * pageSize + 1, cat: catTitle })
+      .songTypeList({ limit: 50, offset: page * pageSize, cat: catTitle })
       .then((lists) => {
         this.setState({ ...lists, current: page })
       })
@@ -33,7 +34,9 @@ export default class Playlist extends Component {
     playlistData.catList.then((songLists) => {
       this.setState({ songLists })
     })
-    this.selectSongList('全部')
+    let { search } = this.props.location
+    let { cat } = qs.parse(search.slice(1))
+    this.selectSongList(cat || '全部')
   }
 
   componentWillUnmount() {

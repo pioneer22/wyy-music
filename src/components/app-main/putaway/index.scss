@@ -30,21 +30,6 @@
       &:not(:first-child) {
         margin-left: 4.5px;
       }
-      img {
-        width: 100px;
-        height: 100px;
-      }
-
-      p {
-        width: 100px;
-        font-size: 12px;
-        &:last-child {
-          color: #666;
-        }
-        &:first-of-type {
-          padding-top: 4px;
-        }
-      }
     }
   }
 }

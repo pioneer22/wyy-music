@@ -83,7 +83,7 @@ export const footerIcons = [
 ]
 
 // 默认音乐id
-export const SONG_PLAYLIST_ID = [298317, 26305547, 1463165983, 1804879213, 209760];
+export const SONG_PLAYLIST_ID = [1815389717, 1404511131, 26305547, 1463165983, 209760];
 
 // 默认音乐
 export const DEFAULT_SONG = {

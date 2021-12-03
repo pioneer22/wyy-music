@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Carousel } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 
+import AlbumItem from 'components/app-main/album-item'
 import { NavLink } from 'react-router-dom'
 import './index.scss'
 
@@ -31,17 +32,28 @@ export default class Putaway extends Component {
           {news &&
             news.map((putArr, index) => {
               return (
-                <div key={index} className="put-img-bar">
+                <div key={index} className="put-img-bar flex">
                   {putArr.map((putObj) => {
                     return (
-                      <NavLink key={putObj.id} to={`/albums?id=${putObj.aid}`}>
-                        <div className="put-img-box">
-                          <div className="put-img-conatiner">
-                            <img src={putObj.picUrlSet}></img>
-                          </div>
-                          <p className="ellipsis">{putObj.songName}</p>
-                          <p className="ellipsis">{putObj.name}</p>
-                        </div>
+                      <NavLink
+                        key={putObj.id}
+                        to={`/albums?id=${putObj.aid}`}
+                        className="put-img-box"
+                      >
+                        <AlbumItem
+                          size="1"
+                          album={{ ...putObj, blurPicUrl: putObj.picUrlSet }}
+                          bottomSlot={
+                            <>
+                              <p className="ellipsis text-line">
+                                {putObj.songName}
+                              </p>
+                              <p className="ellipsis text-line">
+                                {putObj.name}
+                              </p>
+                            </>
+                          }
+                        />
                       </NavLink>
                     )
                   })}

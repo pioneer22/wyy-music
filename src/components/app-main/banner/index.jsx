@@ -3,7 +3,7 @@ import { Carousel, Card } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { downloadUrl } from '@/common/page-data'
 import { connect } from 'react-redux'
-import { saveBanner } from '@/redux/actions/banner'
+import { saveBanner } from '@/redux/actions/recommend'
 import { getBanner } from '@/api/foundMusic'
 import './index.scss'
 
@@ -97,6 +97,6 @@ class Banner extends Component {
   }
 }
 
-export default connect((store) => ({ banner: store.banner }), {
+export default connect((store) => ({}), {
   saveBanner,
 })(Banner)

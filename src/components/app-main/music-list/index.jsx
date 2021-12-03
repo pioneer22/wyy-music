@@ -47,7 +47,6 @@ class MusicList extends Component {
                     <i
                       onClick={() => {
                         this.props.savePlayList(musicObj.id, false)
-                        message.success('已添加~')
                       }}
                     ></i>
                     <i

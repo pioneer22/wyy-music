@@ -1,22 +1,22 @@
 // 该模块是用于定义action对象中type类型的常量值，方便管理
 
-export const SAVEBANNER = 'saveBanner'; // 轮播图
+export const BANNER = 'banner'; // 轮播图
 
-export const SAVEPERSONALIZED = 'savePersonalized'; //  热门推荐
+export const PERSONALIZED = 'personalized'; //  热门推荐
 
-export const SAVENEWSET = 'saveNewSet'; // 新碟上架
+export const NEWSET = 'newSet'; // 新碟上架
 
-export const SAVEPLAYLIST = 'savePlayList'; // 榜单
+export const LIST = 'list'; // 榜单
 
-export const SAVEHOTSINGER = 'saveHotSinger'; // 入驻歌手
+export const HOTSINGER = 'hotSinger'; // 入驻歌手
 
-export const SAVEHOTANCHER = 'saveHotAnchor'; // 热门主播
+export const HOTANCHOR = 'hotAnchor'; // 热门主播
 
-export const SAVESELECTLIST = 'saveSelectList'; // 选中榜单
+export const SELECTLIST = 'selectList'; // 选中榜单
 
-export const SAVETOPLISTS = 'saveTopLists'; // 排行榜单
+export const TOPLISTS = 'topLists'; // 排行榜单
 
-export const SAVEPLAYLISTDETAIL = 'savePlayListDetail'; // 当前选择榜单具体内容
+export const PLAYLISTDETAIL = 'playListDetail'; // 当前选择榜单具体内容
 
 export const SEARCHSELECT = 'searchSelect'; // 搜索框选中
 
@@ -39,3 +39,5 @@ export const FIRSTLOAD = 'firstLoad'; // 首次加载
 export const ISPLAY = 'isPlay'; // 正在播放
 
 export const USERMSG = 'userMsg';// 用户信息
+
+export const MUSICLIST = 'musicList'; // 我的歌单

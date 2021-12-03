@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './index.scss'
 import TitleBar from 'components/title-bar'
+import AlbumItem from 'components/app-main/album-item'
 import { Pagination } from 'antd'
 import { albumArea } from '@/common/page-data'
 import { NavLink } from 'react-router-dom'
@@ -50,37 +51,38 @@ export default class NewDisc extends Component {
           titleObj={{ name: title + '新碟' }}
           centerSlot={
             <>
-              {albumArea.map((areaObj) => {
-                return (
-                  <span
-                    key={areaObj.type}
-                    className="area-item"
-                    onClick={() => this.changeArea(areaObj.type)}
-                  >
-                    {areaObj.name}
-                  </span>
-                )
-              })}
+              {albumArea.map((areaObj) => (
+                <span
+                  key={areaObj.type}
+                  className="area-item"
+                  onClick={() => this.changeArea(areaObj.type)}
+                >
+                  {areaObj.name}
+                </span>
+              ))}
             </>
           }
         />
 
         <div className="flex-between new-disc-box">
-          {allAlbums.map((obj) => {
-            return (
-              <NavLink
-                to={`/albums?id=${obj.id}`}
-                key={obj.id}
-                className="new-disc-item"
-              >
-                <div>
-                  <img src={`${obj.picUrl}?param=130x130`} alt="" />
-                </div>
-                <h3 className="ellipsis">{obj.name}</h3>
-                <p className="ellipsis">{obj.artist.name}</p>
-              </NavLink>
-            )
-          })}
+          {allAlbums.map((obj) => (
+            <NavLink
+              to={`/albums?id=${obj.id}`}
+              key={obj.id}
+              className="new-disc-item"
+            >
+              <AlbumItem
+                size="3"
+                album={{ blurPicUrl: `${obj.picUrl}?param=130x130` }}
+                bottomSlot={
+                  <>
+                    <p className="ellipsis text-line">{obj.name}</p>
+                    <p className="ellipsis text-line">{obj.artist.name}</p>
+                  </>
+                }
+              />
+            </NavLink>
+          ))}
         </div>
 
         <div className="flex-center">
