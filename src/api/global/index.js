@@ -54,3 +54,5 @@ export const checkMusic = (id) => request({ url: '/check/music', params: { id } 
 
 // 新建歌单 name, 可选: privacy  10为隐私歌单, type: 歌单类型 默认'NORMAL',传 'VIDEO'则为视频歌单,传 'SHARED'则为共享歌单
 export const createMusicList = (params) => request({ url: '/playlist/create', params });
+
+export const deleteMusicList = (id) => request({ url: '/playlist/delete', params: { id } }); // 删除歌单
