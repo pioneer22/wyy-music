@@ -163,16 +163,8 @@ button {
   color: #f5f5f5;
 }
 
-.wrap-bg2 {
-  background: url(../img/wrap3.png) repeat-y center 0;
-}
-
 .no-link {
   pointer-events: none;
-}
-
-.m-tab {
-  background: url(../img/tab.png) no-repeat 0 9999px;
 }
 
 .theme-logo {

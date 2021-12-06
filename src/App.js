@@ -21,7 +21,6 @@ export default class App extends Component {
   render () {
     return (
       <>
-        {/* <RouterView routes={config.routes}></RouterView> */}
         <Header />
         <Main />
         <Footer />

@@ -263,17 +263,19 @@ class Artist extends Component {
                       <Fragment key={intObj.ti}>
                         <div className="intro-title">{intObj.ti}</div>
                         <p className="text-p">
-                          {intObj.txt
-                            .split('●')
-                            .slice(1)
-                            .map((item, index) => {
-                              return (
-                                <Fragment key={index}>
-                                  ●&nbsp;{item}
-                                  <br />
-                                </Fragment>
-                              )
-                            })}
+                          {intObj.txt.includes('●')
+                            ? intObj.txt
+                                .split('●')
+                                .slice(1)
+                                .map((item, index) => {
+                                  return (
+                                    <Fragment key={index}>
+                                      ●&nbsp;{item}
+                                      <br />
+                                    </Fragment>
+                                  )
+                                })
+                            : intObj.txt}
                         </p>
                       </Fragment>
                     )

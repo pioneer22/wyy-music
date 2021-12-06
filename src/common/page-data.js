@@ -8,7 +8,7 @@ export const headerLinks = [
 ]
 
 /* 创作者中心 */
-export const authorUrl = "https://music.163.com/st/musician"
+export const authorUrl = "https://github.com/pioneer22/wyy-music/tree/master"
 
 /* 下载地址 */
 export const downloadUrl = "https://d1.music.126.net/dmusic/cloudmusicsetup2.9.5.199424.exe"
