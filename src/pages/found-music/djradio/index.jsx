@@ -4,7 +4,7 @@ import './index.scss'
 
 import * as anchorData from './request'
 import TitleBar from 'components/title-bar'
-import { Pagination } from 'antd'
+import { message, Pagination } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 
 export default class AnchorStation extends Component {
@@ -99,7 +99,13 @@ export default class AnchorStation extends Component {
         <div className="anchor-recommend-box flex">
           {anchorRecommends.map((obj) => {
             return (
-              <div key={obj.id} className="recommend-item">
+              <div
+                key={obj.id}
+                className="recommend-item"
+                onClick={() => {
+                  message.warn('未做~')
+                }}
+              >
                 <img src={obj.imgUrl} alt="" />
                 <div className="recommend-item-content">
                   <p>{obj.name}</p>
@@ -122,7 +128,13 @@ export default class AnchorStation extends Component {
         <ul className="anchor-hot-recommend flex">
           {hotRecommends.map((obj) => {
             return (
-              <li className="hot-recommend-item flex" key={obj.id}>
+              <li
+                className="hot-recommend-item flex"
+                key={obj.id}
+                onClick={() => {
+                  message.warn('未做~')
+                }}
+              >
                 <img src={obj.imgUrl} alt="" />
                 <div>
                   <h3 className="ellipsis">{obj.name}</h3>

@@ -121,14 +121,23 @@ class PlaylistPanel extends Component {
                     <span>{songObj.name}</span>
                     <div className="flex song-detail">
                       <div className="song-operator flex-between-center">
-                        <LikeOutlined onClick={this.likeMusic} />
+                        <LikeOutlined
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            this.likeMusic()
+                          }}
+                        />
                         <DeleteOutlined
-                          onClick={() => {
+                          onClick={(event) => {
+                            event.stopPropagation()
                             this.delMusic(songObj.id)
                           }}
                         />
                         <DownloadOutlined
-                          onClick={() => window.open(getPlayUrl(songObj.id))}
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            window.open(getPlayUrl(songObj.id))
+                          }}
                         />
                       </div>
                       <span>{songObj.ar[0].name}</span>

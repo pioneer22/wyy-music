@@ -18,17 +18,12 @@ class UserDetail extends Component {
     const { search } = this.props.location
     const { id } = qs.parse(search.slice(1))
 
-    if (this.props.header.musicList.length === 0) {
-      getPlayList(id).then((res) => {
-        if (res.code === 200) {
-          this.setState({ playlist: res.playlist })
-          this.props.changeMusicList(res.playlist)
-        }
-      })
-    } else {
-      let playlist = this.props.header.musicList
-      this.setState({ playlist })
-    }
+    getPlayList(id).then((res) => {
+      if (res.code === 200) {
+        this.setState({ playlist: res.playlist })
+        this.props.changeMusicList(res.playlist)
+      }
+    })
 
     getUserDetail(id).then((res) => {
       if (res.code === 200) {

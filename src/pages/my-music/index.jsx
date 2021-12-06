@@ -31,24 +31,14 @@ const { Panel } = Collapse
 const { confirm } = Modal
 class MyMusic extends Component {
   componentDidMount() {
-    const { header } = this.props
-    if (
-      Object.keys(header.userMsg).length > 0 &&
-      header.musicList.length === 0
-    ) {
-      let id = localStorage.getItem('m_uid')
-      getPlayList(id).then((res) => {
-        if (res.code === 200) {
-          this.setState({ musicList: res.playlist })
-          this.props.changeMusicList(res.playlist)
-          this.reqPlayList(res.playlist[0].id)
-        }
-      })
-    } else {
-      let musicList = this.props.header.musicList
-      this.setState({ musicList })
-      this.reqPlayList(musicList[0].id)
-    }
+    let id = localStorage.getItem('m_uid')
+    getPlayList(id).then((res) => {
+      if (res.code === 200) {
+        this.setState({ musicList: res.playlist })
+        this.props.changeMusicList(res.playlist)
+        this.reqPlayList(res.playlist[0].id)
+      }
+    })
   }
 
   state = {
