@@ -48,7 +48,7 @@
   3. 歌词播放, 通过判断当前歌词的时间结尾得知播放到哪句歌词, 通过scrollTo来实现歌词上移。 
   4. 将当前播放歌曲保存在redux, 对于没版权的歌曲直接跳过, 播放下一首歌曲。
   
-## 后台API：[Binaryify](https://github.com/Binaryify/NeteaseCloudMusicApi), 感谢Binaryify老哥提供的接口。
+## 后台API：感谢[Binaryify](https://github.com/Binaryify/NeteaseCloudMusicApi)老哥提供的接口。
 
 ## 后续会使用hook改写。
 
