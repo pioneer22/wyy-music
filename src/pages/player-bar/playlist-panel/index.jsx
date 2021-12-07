@@ -47,7 +47,7 @@ class PlaylistPanel extends Component {
       this.props.delPlayList(id)
       resolve()
     }).then(() => {
-      if (this.props.playerBar.get('isPlay')) {
+      if (this.props.playerBar.get('currentSong').id === id) {
         // 重置当前歌曲
         let songObj = this.props.playerBar.get('playList')[0]
         this.props.saveCurrentSong(songObj, 0)

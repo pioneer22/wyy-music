@@ -129,9 +129,12 @@ class SongDetail extends Component {
                     currentSelect.artists.map((nameObj, index) => {
                       return (
                         <Fragment key={nameObj.id}>
-                          <span className="singer-name text-line">
+                          <NavLink
+                            className="singer-name text-line"
+                            to={`/artists?id=${nameObj.id}`}
+                          >
                             {nameObj.name}
-                          </span>
+                          </NavLink>
                           {index === currentSelect.artists.length - 1
                             ? ''
                             : ' / '}
@@ -142,11 +145,18 @@ class SongDetail extends Component {
               </p>
               <p className="song-introduce">
                 <span>所属专辑:</span>
-                <span className="singer-name text-line">
+                <NavLink
+                  className="singer-name text-line"
+                  to={`/albums?id=${
+                    currentSelect &&
+                    currentSelect.album &&
+                    currentSelect.album.id
+                  }`}
+                >
                   {currentSelect &&
                     currentSelect.album &&
                     currentSelect.album.name}
-                </span>
+                </NavLink>
               </p>
               <div className="flex song-operator">
                 <div className="sprite_button play">
@@ -236,9 +246,12 @@ class SongDetail extends Component {
                     <img src={obj.user.avatarUrl + '?param=50x50'} alt="" />
                     <div className="comment-content">
                       <div>
-                        <span className="text-line user-name">
+                        <NavLink
+                          to={`/user?id=${obj.user.userId}`}
+                          className="text-line user-name"
+                        >
                           {obj.user.nickname}
-                        </span>
+                        </NavLink>
                         :<span className="comment-text">{obj.content}</span>
                       </div>
                       <div className="comment-bottom flex-between-center">

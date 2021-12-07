@@ -115,9 +115,11 @@ class Album extends Component {
             <div className="album-person">
               <p>
                 歌手:
-                <span className="text-line">
-                  {album.artist && album.artist.name}
-                </span>
+                <NavLink to={`/artists?id=${album.artist && album.artist.id}`}>
+                  <span className="text-line">
+                    {album.artist && album.artist.name}
+                  </span>
+                </NavLink>
               </p>
               <p>
                 发行时间:<span>{album.publishTime || '暂无'}</span>
