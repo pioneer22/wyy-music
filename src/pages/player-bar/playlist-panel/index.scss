@@ -43,20 +43,9 @@
     background: url(~assets/img/playlist_bg.png) repeat-y -1014px 0;
     box-sizing: border-box;
     &-left {
-      width: 561px;
+      width: 555px;
       padding-left: 2px;
       overflow: auto;
-      position: relative;
-      &::after {
-        position: absolute;
-        content: '';
-        width: 6px;
-        height: 274px;
-        background: #000;
-        right: 0px;
-        top: 2px;
-      }
-
       .playlist-item {
         padding: 0 10px;
         height: 28px;
@@ -87,6 +76,12 @@
           color: white;
         }
       }
+    }
+
+    &-bar {
+      width: 6px;
+      background: #000;
+      height: 100%;
     }
 
     &-right {

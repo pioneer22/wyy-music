@@ -148,6 +148,7 @@ class PlaylistPanel extends Component {
               })}
             </ul>
           </div>
+          <span className="playlist-main-bar"></span>
           <div className="playlist-main-right" ref={this.lyricRef}>
             <div className="lyric-content">
               {lyricList &&
