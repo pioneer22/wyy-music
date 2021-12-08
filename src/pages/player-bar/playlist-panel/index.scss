@@ -50,6 +50,11 @@
         padding: 0 10px;
         height: 28px;
         margin-top: 2px;
+        & > span {
+          display: inline-block;
+          width: 330px;
+          text-align: left;
+        }
         .song-detail {
           & > span {
             padding: 0px 10px;

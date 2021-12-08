@@ -118,7 +118,7 @@ class PlaylistPanel extends Component {
                       this.switchSong(songObj, index)
                     }}
                   >
-                    <span>{songObj.name}</span>
+                    <span className="ellipsis">{songObj.name}</span>
                     <div className="flex song-detail">
                       <div className="song-operator flex-between-center">
                         <LikeOutlined
