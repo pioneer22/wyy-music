@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import './index.scss'
 import TitleBar from 'components/title-bar'
 import AlbumItem from 'components/app-main/album-item'
@@ -7,96 +7,97 @@ import { albumArea } from '@/common/page-data'
 import { NavLink } from 'react-router-dom'
 import * as req from './request'
 
-export default class NewDisc extends Component {
-  state = {
-    allAlbums: [],
-    total: 0,
-    current: 1,
-    area: 'ALL',
-    title: '全部',
-  }
+export default memo(function NewDisc(props) {
+  const [allAlbums, setAllAlbums] = useState([])
+  const [total, setTotal] = useState(0)
+  const [current, setCurrent] = useState(1)
+  const [area, setArea] = useState('ALL')
+  const [title, setTitle] = useState('全部')
 
-  componentDidMount() {
+  useEffect(() => {
     req.allAlbum().then((album) => {
-      this.setState(album)
+      setTotal(album.total)
+      setAllAlbums(album.allAlbums)
     })
-  }
+  }, [])
 
-  changePage(page, pageSize) {
+  const changePage = (page, pageSize) => {
     req
-      .allAlbum({ area: this.state.area, offset: page * pageSize })
+      .allAlbum({ area: area, offset: (page - 1) * pageSize })
       .then((album) => {
-        this.setState({ ...album, current: page })
+        setTotal(album.total)
+        setAllAlbums(album.allAlbums)
+        setCurrent(page)
       })
   }
 
-  changeArea(area) {
+  const changeArea = (area) => {
     req.allAlbum({ area }).then((album) => {
-      this.setState({ ...album, current: 1 })
+      setArea(area)
+      setTotal(album.total)
+      setAllAlbums(album.allAlbums)
+      setCurrent(1)
     })
     albumArea.some((item) => {
       if (area === item.type) {
-        this.setState({ title: item.name })
+        setTitle(item.name)
         return true
       }
       return false
     })
   }
 
-  render() {
-    const { allAlbums, total, current, title } = this.state
-    return (
-      <div className="w980 common-center new-disc-container">
-        <TitleBar
-          titleObj={{ name: title + '新碟' }}
-          centerSlot={
-            <>
-              {albumArea.map((areaObj) => (
-                <span
-                  key={areaObj.type}
-                  className="area-item"
-                  onClick={() => this.changeArea(areaObj.type)}
-                >
-                  {areaObj.name}
-                </span>
-              ))}
-            </>
-          }
-        />
+  return (
+    <div className="w980 common-center new-disc-container">
+      <TitleBar
+        titleObj={{ name: title + '新碟' }}
+        centerSlot={
+          <>
+            {albumArea.map((areaObj) => (
+              <span
+                key={areaObj.type}
+                className="area-item"
+                onClick={() => changeArea(areaObj.type)}
+              >
+                {areaObj.name}
+              </span>
+            ))}
+          </>
+        }
+      />
 
-        <div className="flex-between new-disc-box">
-          {allAlbums.map((obj) => (
-            <NavLink
-              to={`/albums?id=${obj.id}`}
-              key={obj.id}
-              className="new-disc-item"
-            >
-              <AlbumItem
-                size="3"
-                album={{ blurPicUrl: `${obj.picUrl}?param=130x130` }}
-                bottomSlot={
-                  <>
-                    <p className="ellipsis text-line">{obj.name}</p>
-                    <p className="ellipsis text-line">{obj.artist.name}</p>
-                  </>
-                }
-              />
-            </NavLink>
-          ))}
-        </div>
-
-        <div className="flex-center">
-          <Pagination
-            current={current}
-            hideOnSinglePage={true}
-            pageSize={30}
-            total={total}
-            showSizeChanger={false}
-            showQuickJumper={true}
-            onChange={(page, pageSize) => this.changePage(page, pageSize)}
-          />
-        </div>
+      <div className="flex-between new-disc-box">
+        {allAlbums.map((obj) => (
+          <NavLink
+            to={`/albums?id=${obj.id}`}
+            key={obj.id}
+            className="new-disc-item"
+          >
+            <AlbumItem
+              size="3"
+              album={{ blurPicUrl: `${obj.picUrl}?param=130x130` }}
+              bottomSlot={
+                <>
+                  <p className="ellipsis text-line">{obj.name}</p>
+                  <p className="ellipsis text-line">{obj.artist.name}</p>
+                </>
+              }
+            />
+          </NavLink>
+        ))}
       </div>
-    )
-  }
-}
+
+      <div className="flex-center">
+        <Pagination
+          current={current}
+          hideOnSinglePage={true}
+          pageSize={30}
+          total={total}
+          showSizeChanger={false}
+          showQuickJumper={true}
+          onChange={(page, pageSize) => changePage(page, pageSize)}
+        />
+      </div>
+    </div>
+  )
+})

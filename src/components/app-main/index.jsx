@@ -1,11 +1,9 @@
-import React, { Component } from 'react'
+import React, { memo } from 'react'
 import './index.scss'
 
 import { renderRoutes } from 'react-router-config'
 import routes from '@/router'
 
-export default class Main extends Component {
-  render() {
-    return <>{renderRoutes(routes)}</>
-  }
-}
+export default memo(function Main() {
+  return <>{renderRoutes(routes)}</>
+})

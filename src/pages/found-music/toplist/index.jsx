@@ -1,109 +1,97 @@
-import React, { Component, Fragment } from 'react'
-
+import React, { memo, Fragment, useState, useEffect } from 'react'
 import qs from 'querystring'
-
 import TopListDetail from './toplist-detail'
 import * as topData from './request'
-
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import {
   saveSelectList,
   saveTopLists,
   savePlayListDetail,
 } from '@/redux/actions/toplist'
-
 import './index.scss'
-class TopList extends Component {
-  state = {
-    ranks: [],
-    selectList: {},
-  }
 
-  componentDidMount() {
-    const { search } = this.props.location
+export default memo(function TopList(props) {
+  const [ranks, setRanks] = useState([])
+
+  const dispatch = useDispatch()
+  const { topLists } = useSelector(
+    (state) => ({
+      topLists: state.toplist.topLists,
+    }),
+    shallowEqual
+  )
+
+  useEffect(() => {
+    const { search } = props.location
     const { id } = qs.parse(search.slice(1))
 
-    let topLists = this.props.toplist.topLists
     if (topLists) {
-      this.setState({ ranks: topLists })
+      setRanks(topLists)
       let topId = id || topLists[0].id
       topData.playList(topId).then((playlistObj) => {
-        this.props.savePlayListDetail(playlistObj)
+        dispatch(savePlayListDetail(playlistObj))
       })
     } else {
       topData.topList().then((ranks) => {
-        this.setState({ ranks })
-        this.props.saveSelectList(ranks[0])
-        this.props.saveTopLists(ranks)
+        setRanks(ranks)
+        dispatch(saveSelectList(ranks[0]))
+        dispatch(saveTopLists(ranks))
         topData.playList(ranks[0].id).then((playlistObj) => {
-          this.props.savePlayListDetail(playlistObj)
+          dispatch(savePlayListDetail(playlistObj))
         })
       })
     }
-  }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return
-    }
-  }
-
-  selectList(rankObj) {
-    this.props.saveSelectList(rankObj)
+  const selectList = (rankObj) => {
+    dispatch(saveSelectList(rankObj))
     topData.playList(rankObj.id).then((playlistObj) => {
-      this.props.savePlayListDetail(playlistObj)
+      dispatch(savePlayListDetail(playlistObj))
     })
-    this.props.history.push(`/foundMusic/toplist?id=${rankObj.id}`)
+    props.history.push(`/foundMusic/toplist?id=${rankObj.id}`)
   }
 
-  render() {
-    const { ranks } = this.state
-    return (
-      <div className="w980 toplist-content">
-        <div className="toplist-content-left">
-          {ranks.map((rankObj, index) => {
-            return (
-              <Fragment key={rankObj.id}>
-                {index === 0 || index === 4 ? (
-                  <h3
-                    className="ranking-title"
-                    style={{ marginTop: index === 4 ? '17px' : '' }}
-                  >
-                    {index === 0
-                      ? '云音乐特色榜'
-                      : index === 4
-                      ? '全球媒体榜'
-                      : ''}
-                  </h3>
-                ) : (
-                  ''
-                )}
-                <div
-                  key={rankObj.id}
-                  className="ranking-item flex"
-                  onClick={() => this.selectList(rankObj)}
+  return (
+    <div className="w980 toplist-content">
+      <div className="toplist-content-left">
+        {ranks.map((rankObj, index) => {
+          return (
+            <Fragment key={rankObj.id}>
+              {index === 0 || index === 4 ? (
+                <h3
+                  className="ranking-title"
+                  style={{ marginTop: index === 4 ? '17px' : '' }}
                 >
-                  <img src={rankObj.coverImgUrl} alt="" />
-                  <div>
-                    <span>{rankObj.name}</span>
-                    <span>{rankObj.updateFrequency}</span>
-                  </div>
+                  {index === 0
+                    ? '云音乐特色榜'
+                    : index === 4
+                    ? '全球媒体榜'
+                    : ''}
+                </h3>
+              ) : (
+                ''
+              )}
+              <div
+                key={rankObj.id}
+                className="ranking-item flex"
+                onClick={() => {
+                  selectList(rankObj)
+                }}
+              >
+                <img src={rankObj.coverImgUrl} alt="" />
+                <div>
+                  <span>{rankObj.name}</span>
+                  <span>{rankObj.updateFrequency}</span>
                 </div>
-              </Fragment>
-            )
-          })}
-        </div>
-
-        <div className="toplist-content-right">
-          <TopListDetail />
-        </div>
+              </div>
+            </Fragment>
+          )
+        })}
       </div>
-    )
-  }
-}
 
-export default connect((store) => ({ toplist: store.toplist }), {
-  saveSelectList,
-  saveTopLists,
-  savePlayListDetail,
-})(TopList)
+      <div className="toplist-content-right">
+        <TopListDetail />
+      </div>
+    </div>
+  )
+})

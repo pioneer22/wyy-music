@@ -6,7 +6,7 @@ import { delDate } from 'utils/utils'
 export default {
   reqAlbum: (id) => getAlbumDetail(id).then((res) => {
     if (res.code === 200) {
-      return { albumUrl: res.album.picUrl + '?param=132y132' }
+      return res.album.picUrl + '?param=132y132'
     }
   }),
 
@@ -16,7 +16,7 @@ export default {
         .replace(/\[(\d|:|\.)*\]/g, '@@')
         .split('@@')
         .slice(1, -1)
-      return { words }
+      return words;
     }
   }),
 

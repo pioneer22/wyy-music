@@ -41,3 +41,5 @@ export const ISPLAY = 'isPlay'; // 正在播放
 export const USERMSG = 'userMsg';// 用户信息
 
 export const MUSICLIST = 'musicList'; // 我的歌单
+
+export const ISLOGIN = 'isLogin'; // 退出登录

@@ -1,12 +1,19 @@
 /* eslint-disable default-case */
 /* eslint-disable no-const-assign */
-import React, { Component, lazy } from 'react'
+import React, {
+  lazy,
+  memo,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react'
 import './index.scss'
 
 import { Slider, Tooltip, message } from 'antd'
 import { DownloadOutlined, UndoOutlined } from '@ant-design/icons'
 import { NavLink } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { getPlayUrl, msTurnMins, getRandomNum } from 'utils/utils'
 import { SONG_PLAYLIST_ID as playListId } from '@/common/page-data'
@@ -22,45 +29,65 @@ import {
 
 const PlaylistPanel = lazy(() => import('./playlist-panel'))
 
-class PlayBar extends Component {
-  loopRef = React.createRef()
-  audioRef = React.createRef()
+export default memo(function PlayBar(props) {
+  const loopRef = useRef()
+  const audioRef = useRef()
 
-  state = {
-    progress: 0, // 滑块进度
-    playCurrentTime: '0:00', // 当前播放到的时间
-    currentTime: 0, // 当前播放时间
-    isShowSlide: false, // 是否显示播放列表
-    isShowBar: false, // 是否显示调节音量面板
-    isChange: false, // 是否正在滑动播放滚动条
-  }
+  const [progress, setProgress] = useState(0) // 滑块进度
+  const [playCurrentTime, setPlayCurrentTime] = useState('0:00') // 当前播放到的时间
+  const [isShowSlide, setIsShowSlide] = useState(false) // 是否显示播放列表
+  const [isShowBar, setIsShowBar] = useState(false) // 是否显示调节音量面板
+  const [isChange, setIsChange] = useState(false) // 是否正在滑动播放滚动条
+  const dispatch = useDispatch()
 
-  componentDidMount() {
-    this.props.savePlayList(playListId, true) // 初始化播放列表
-    this.audioRef.current.volume = 0.3 // 初始化音量
-    this.audioRef.current.src = getPlayUrl(
-      this.props.playerBar.get('currentSong').id
-    )
-  }
+  const {
+    currentSong,
+    isPlay,
+    playSongIndex,
+    playList,
+    lyricList,
+    currentLyricIndex,
+    playSequence,
+  } = useSelector(
+    (state) => ({
+      currentSong: state.playerBar.get('currentSong'),
+      isPlay: state.playerBar.get('isPlay'),
+      playSongIndex: state.playerBar.get('playSongIndex'),
+      playList: state.playerBar.get('playList'),
+      lyricList: state.playerBar.get('lyricList'),
+      currentLyricIndex: state.playerBar.get('currentLyricIndex'),
+      playSequence: state.playerBar.get('playSequence'),
+    }),
+    shallowEqual
+  )
 
-  componentDidUpdate() {
-    this.props.playerBar.get('isPlay')
-      ? this.audioRef.current.play()
-      : this.audioRef.current.pause()
-  }
+  useEffect(() => {
+    dispatch(savePlayList(playListId, true)) // 初始化播放列表
+  }, [dispatch])
+
+  useEffect(() => {
+    audioRef.current.volume = 0.3 // 初始化音量
+    audioRef.current.src = getPlayUrl(currentSong.id)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    isPlay ? audioRef.current.play() : audioRef.current.pause()
+  }, [isPlay])
+
+  const picUrl = currentSong.al && currentSong.al.picUrl // 图片url
+  const songName = currentSong.name // 歌曲名字
+  const singerName = currentSong.ar && currentSong.ar[0].name //作者名字
+  const duration = currentSong.dt //播放总时间
+  const songUrl = getPlayUrl(currentSong.id) // 歌曲URL
 
   // 音乐播放暂停
-  musicPlay() {
-    let isPlay = this.props.playerBar.get('isPlay')
-    this.props.changePlayStatus(!isPlay)
-    !isPlay ? this.audioRef.current.play() : this.audioRef.current.pause()
+  const musicPlay = () => {
+    dispatch(changePlayStatus(!isPlay))
+    !isPlay ? audioRef.current.play() : audioRef.current.pause()
   }
 
   // 切换上一首下一首
-  switchSong(type) {
-    let playerBar = this.props.playerBar
-    let playSongIndex = playerBar.get('playSongIndex')
-    let playList = playerBar.get('playList')
+  const switchSong = (type) => {
     let newPlaySongIndex = 0
     if (type > 0) {
       /* 切换下一首 */
@@ -81,32 +108,27 @@ class PlayBar extends Component {
     }
 
     new Promise((resolve) => {
-      this.audioRef.current.currentTime = 0
-      this.props.saveCurrentSong(playList[newPlaySongIndex], newPlaySongIndex)
+      audioRef.current.currentTime = 0
+      dispatch(saveCurrentSong(playList[newPlaySongIndex], newPlaySongIndex))
       resolve()
     }).then(() => {
-      this.audioRef.current.play()
-      this.props.changePlayStatus(true)
+      audioRef.current.play()
+      dispatch(changePlayStatus(true))
     })
   }
 
   // 更改播放进度条
-  timeUpdate() {
-    let playerBar = this.props.playerBar
-    let ct = this.audioRef.current.currentTime
-    let totalTime = playerBar.get('currentSong').dt
-
-    if (!this.state.isChange) {
-      this.setState({
-        playCurrentTime: msTurnMins(ct * 1000),
-        progress: (ct * 1000 * 100) / totalTime,
-      })
+  const timeUpdate = () => {
+    let ct = audioRef.current.currentTime
+    // let totalTime = currentSong.dt
+    if (!isChange) {
+      setPlayCurrentTime(msTurnMins(ct * 1000))
+      setProgress((ct * 1000 * 100) / duration)
     }
 
     // 当前播放歌曲歌词
     let i = 0
-    let currentLyric =
-      playerBar.get('lyricList')[playerBar.get('playSongIndex')]
+    let currentLyric = lyricList[playSongIndex]
 
     // 当前播放到哪一句
     if (currentLyric) {
@@ -116,33 +138,27 @@ class PlayBar extends Component {
           break
         }
       }
-      if (playerBar.get('currentLyricIndex') !== i - 1) {
-        this.props.changeCurrentLyricIndex(i - 1)
+      if (currentLyricIndex !== i - 1) {
+        dispatch(changeCurrentLyricIndex(i - 1))
       }
     }
   }
 
   /* 播放完 */
-  handleTimeEnd() {
-    this.props.changePlayStatus(false)
-    this.setState({
-      playCurrentTime: '0:00',
-      progress: 0,
-    })
-    let playerBar = this.props.playerBar
-    let playSongIndex = playerBar.get('playSongIndex')
-    let playList = playerBar.get('playList')
-    let playSequence = playerBar.get('playSequence')
-    let newIndex = 0
+  const handleTimeEnd = () => {
+    dispatch(changePlayStatus(false))
+    setPlayCurrentTime('0:00')
+    setProgress(0)
 
+    let newIndex = 0
     switch (playSequence) {
       case 0:
         newIndex = playSongIndex === playList.length - 1 ? 0 : playSongIndex + 1
         break
       case 1:
-        newIndex = getRandomNum(playerBar.get('playList').length)
+        newIndex = getRandomNum(playList.length)
         while (newIndex === playSongIndex) {
-          newIndex = getRandomNum(playerBar.get('playList').length)
+          newIndex = getRandomNum(playList.length)
         }
         break
       case 2:
@@ -153,215 +169,194 @@ class PlayBar extends Component {
     }
 
     new Promise((resolve) => {
-      this.audioRef.current.currentTime = 0
-      this.props.changeCurrentLyricIndex(0)
-      this.props.saveCurrentSong(playList[newIndex], newIndex)
+      audioRef.current.currentTime = 0
+      dispatch(changeCurrentLyricIndex(0))
+      dispatch(saveCurrentSong(playList[newIndex], newIndex))
       resolve()
     }).then(() => {
-      this.audioRef.current.play()
-      this.props.changePlayStatus(true)
+      audioRef.current.play()
+      dispatch(changePlayStatus(true))
     })
   }
 
   /* 播放链接出错 */
-  handleError() {
-    let playerBar = this.props.playerBar
-    let del_id = playerBar.get('currentSong').id
+  const handleError = () => {
+    let del_id = currentSong.id
     message.warn('您不是会员, 暂无播放权限~')
-    this.props.delPlayList(del_id)
+    dispatch(delPlayList(del_id))
 
-    let playList = playerBar.get('playList')
-    let playSongIndex = playerBar.get('playSongIndex') + 1
-    this.props.saveCurrentSong(playList[playSongIndex], playSongIndex)
+    let index = playSongIndex + 1
+    dispatch(saveCurrentSong(playList[index], index))
   }
 
-  sliderChange(value) {
-    this.setState({ isChange: true })
-    let currentTime = (value / 100) * this.props.playerBar.get('currentSong').dt
-    this.setState({ progress: value, playCurrentTime: msTurnMins(currentTime) })
-  }
+  const sliderChange = useCallback(
+    (value) => {
+      setIsChange(true)
+      let currentTime = (value / 100) * duration
+      setProgress(value)
+      setPlayCurrentTime(msTurnMins(currentTime))
+    },
+    [duration]
+  )
 
-  slideAfterChange(value) {
-    let totalTime = this.props.playerBar.get('currentSong').dt
-    this.audioRef.current.currentTime = (value / 1000 / 100) * totalTime
-    this.setState({ isChange: false })
+  const slideAfterChange = (value) => {
+    let totalTime = currentSong.dt
+    audioRef.current.currentTime = (value / 1000 / 100) * totalTime
+    setIsChange(false)
   }
 
   /* 切换播放模式 */
-  changeSequence() {
+  const changeSequence = () => {
     let position = ['-3px -344px', '-66px -248px', '-66px -344px']
-    let playSequence = this.props.playerBar.get('playSequence')
     let index = playSequence === 2 ? 0 : playSequence + 1
-    this.props.savePlaySequence(index)
-    this.loopRef.current.style.backgroundPosition = position[index]
+    dispatch(savePlaySequence(index))
+    loopRef.current.style.backgroundPosition = position[index]
   }
 
   // 调节音量
-  changingVolume(value) {
-    this.audioRef.current.volume = value / 100
+  const changingVolume = (value) => {
+    audioRef.current.volume = value / 100
   }
 
   // 关闭播放列表面板
-  closePanel() {
-    this.setState({ isShowSlide: false })
+  const closePanel = () => {
+    setIsShowSlide(false)
   }
 
-  render() {
-    const { progress, isShowSlide, isShowBar, playCurrentTime } = this.state
-    const { playerBar } = this.props
-    let currentSong = playerBar.get('currentSong')
-    let isPlay = playerBar.get('isPlay')
-    return (
-      <div className="play-bar sprite_player">
-        <div className="w980 flex-column">
-          <div className="play-box flex-column">
-            <button
-              className="sprite_player pre"
-              onClick={() => this.switchSong(-1)}
-            ></button>
-            <button
-              className={`sprite_player play ${isPlay ? 'playing' : ''}`}
-              onClick={() => this.musicPlay()}
-            ></button>
-            <button
-              className="sprite_player next"
-              onClick={() => this.switchSong(1)}
-            ></button>
+  return (
+    <div className="play-bar sprite_player">
+      <div className="w980 flex-column">
+        <div className="play-box flex-column">
+          <button
+            className="sprite_player pre"
+            onClick={() => switchSong(-1)}
+          ></button>
+          <button
+            className={`sprite_player play ${isPlay ? 'playing' : ''}`}
+            onClick={musicPlay}
+          ></button>
+          <button
+            className="sprite_player next"
+            onClick={() => switchSong(1)}
+          ></button>
+        </div>
+        <NavLink
+          to={`/songs?id=${currentSong?.id}`}
+          className="current-img flex-column"
+        >
+          <img src={picUrl + '?param=35x35'} alt="" />
+        </NavLink>
+        <div className="play-detail">
+          <div className="play-name">
+            <NavLink
+              to={`/songs?id=${currentSong?.id}`}
+              className="text-line ellipsis"
+            >
+              {songName}
+            </NavLink>
+            <span className="ellipsis">{singerName}</span>
           </div>
-          <NavLink
-            to={`/songs?id=${currentSong.id}`}
-            className="current-img flex-column"
-          >
-            <img src={currentSong.al.picUrl + '?param=35x35'} alt="" />
-          </NavLink>
-          <div className="play-detail">
-            <div className="play-name">
-              <NavLink
-                to={`/songs?id=${currentSong.id}`}
-                className="text-line ellipsis"
+
+          <Slider
+            defaultValue={0}
+            value={progress}
+            onChange={(value) => sliderChange(value)}
+            onAfterChange={(value) => slideAfterChange(value)}
+          />
+        </div>
+        <div className="play-time">
+          <span className="play-time-detail">
+            <span>{playCurrentTime}</span> / {msTurnMins(duration)}
+          </span>
+        </div>
+
+        <div className="player-operator flex-column">
+          <div className="flex-between-center left-box">
+            <Tooltip title="下载音乐">
+              <a
+                download={songName}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={getPlayUrl(currentSong?.id)}
               >
-                {currentSong.name}
-              </NavLink>
-              <span className="ellipsis">{currentSong.ar[0].name}</span>
-            </div>
+                <DownloadOutlined className="download" />
+              </a>
+            </Tooltip>
 
-            <Slider
-              defaultValue={0}
-              value={progress}
-              onChange={(value) => this.sliderChange(value)}
-              onAfterChange={(value) => this.slideAfterChange(value)}
-            />
-          </div>
-          <div className="play-time">
-            <span className="play-time-detail">
-              <span>{playCurrentTime}</span> / {msTurnMins(currentSong.dt)}
-            </span>
+            <Tooltip title="重新播放">
+              <UndoOutlined
+                className="refresh"
+                onClick={() => {
+                  audioRef.current.currentTime = 0
+                }}
+              />
+            </Tooltip>
           </div>
 
-          <div className="player-operator flex-column">
-            <div className="flex-between-center left-box">
-              <Tooltip title="下载音乐">
-                <a
-                  download={currentSong.name}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={getPlayUrl(currentSong.id)}
-                >
-                  <DownloadOutlined className="download" />
-                </a>
-              </Tooltip>
-
-              <Tooltip title="重新播放">
-                <UndoOutlined
-                  className="refresh"
-                  onClick={() => {
-                    this.audioRef.current.currentTime = 0
-                  }}
-                />
-              </Tooltip>
-            </div>
-
-            <div className="right-box sprite_player flex-column">
-              <Tooltip title="调节音量">
-                <button
-                  className="sprite_player btn volume"
-                  onClick={() => {
-                    this.setState({ isShowBar: !isShowBar })
-                  }}
-                ></button>
-              </Tooltip>
-
-              <Tooltip
-                title={
-                  ['顺序播放', '随机播放', '单曲循环'][
-                    playerBar.get('playSequence')
-                  ]
-                }
-              >
-                <button
-                  className="sprite_player btn loop"
-                  ref={this.loopRef}
-                  onClick={(e) => this.changeSequence()}
-                ></button>
-              </Tooltip>
-
+          <div className="right-box sprite_player flex-column">
+            <Tooltip title="调节音量">
               <button
-                className="sprite_player btn playlist"
-                onClick={(e) => {
-                  this.setState({ isShowSlide: !isShowSlide })
+                className="sprite_player btn volume"
+                onClick={() => {
+                  setIsShowBar(!isShowBar)
                 }}
-              >
-                <Tooltip title="播放列表">
-                  <span>{playerBar.get('playList').length}</span>
-                  <CSSTransition
-                    in={isShowSlide}
-                    timeout={3300}
-                    classNames="playlist"
-                  >
-                    <PlaylistPanel
-                      isShowSlider={isShowSlide}
-                      closePanel={this.closePanel.bind(this)}
-                    />
-                  </CSSTransition>
-                </Tooltip>
-              </button>
+              ></button>
+            </Tooltip>
 
-              {/* 调节音量 */}
-              <div
-                className="sprite_player top-volume"
-                style={{ display: isShowBar ? 'block' : 'none' }}
-                onMouseLeave={() => {
-                  this.setState({ isShowBar: false })
-                }}
-              >
-                <Slider
-                  vertical
-                  defaultValue={30}
-                  onChange={(value) => this.changingVolume(value)}
-                />
-              </div>
+            <Tooltip title={['顺序播放', '随机播放', '单曲循环'][playSequence]}>
+              <button
+                className="sprite_player btn loop"
+                ref={loopRef}
+                onClick={changeSequence}
+              ></button>
+            </Tooltip>
+
+            <button
+              className="sprite_player btn playlist"
+              onClick={(e) => {
+                setIsShowSlide(!isShowSlide)
+              }}
+            >
+              <Tooltip title="播放列表">
+                <span>{playList?.length}</span>
+                <CSSTransition
+                  in={isShowSlide}
+                  timeout={3300}
+                  classNames="playlist"
+                >
+                  <PlaylistPanel
+                    isShowSlider={isShowSlide}
+                    closePanel={closePanel.bind(this)}
+                  />
+                </CSSTransition>
+              </Tooltip>
+            </button>
+
+            <div
+              className="sprite_player top-volume"
+              style={{ display: isShowBar ? 'block' : 'none' }}
+              onMouseLeave={() => {
+                setIsShowBar(false)
+              }}
+            >
+              <Slider
+                vertical
+                defaultValue={30}
+                onChange={(value) => changingVolume(value)}
+              />
             </div>
           </div>
         </div>
-        <audio
-          id="audio"
-          ref={this.audioRef}
-          onTimeUpdate={() => this.timeUpdate()}
-          onEnded={() => this.handleTimeEnd()}
-          onError={() => this.handleError()}
-          preload="auto"
-          src={getPlayUrl(currentSong.id)}
-        />
       </div>
-    )
-  }
-}
-
-export default connect((store) => ({ playerBar: store.playerBar }), {
-  savePlaySequence,
-  savePlayList,
-  saveCurrentSong,
-  changeCurrentLyricIndex,
-  changePlayStatus,
-  delPlayList,
-})(PlayBar)
+      <audio
+        id="audio"
+        ref={audioRef}
+        onTimeUpdate={() => timeUpdate()}
+        onEnded={handleTimeEnd}
+        onError={handleError}
+        preload="auto"
+        src={songUrl}
+      />
+    </div>
+  )
+})
