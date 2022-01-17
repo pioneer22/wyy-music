@@ -50,7 +50,7 @@
   
 ## 后台API：感谢[Binaryify](https://github.com/Binaryify/NeteaseCloudMusicApi)老哥提供的接口。
 
-## 后续会使用hook改写。
+## 已用hooks改写, 详细代码见hook分支。
 
 
 
