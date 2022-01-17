@@ -104,7 +104,7 @@ export default memo(function Recommend(props) {
           <div className="hot-content common-content flex-column">
             {personalizeds.map((perObj) => {
               return (
-                <NavLink key={perObj.id} to={`/playlist?id=${perObj.id}`}>
+                <NavLink key={perObj.id} to={`/playlists?id=${perObj.id}`}>
                   <MusicModule {...perObj}></MusicModule>
                 </NavLink>
               )

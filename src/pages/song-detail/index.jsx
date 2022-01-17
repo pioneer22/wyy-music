@@ -13,7 +13,7 @@ import { getPlayUrl } from 'utils/utils'
 import songDetail from './request'
 
 import { saveSearchSelect } from '@/redux/actions/header'
-import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
+import { savePlayList } from '@/redux/actions/player-bar'
 
 export default memo(function SongDetail(props) {
   const [albumUrl, setAlbumUrl] = useState(
@@ -87,7 +87,6 @@ export default memo(function SongDetail(props) {
 
   const playMusic = (id) => {
     dispatch(savePlayList(id, true))
-    dispatch(changePlayStatus(true))
   }
 
   return (
@@ -324,7 +323,7 @@ export default memo(function SongDetail(props) {
               total={total}
               showSizeChanger={false}
               showQuickJumper={true}
-              onChange={(page, pageSize) => changePage(page, pageSize)}
+              onChange={changePage}
             />
           </div>
         </div>

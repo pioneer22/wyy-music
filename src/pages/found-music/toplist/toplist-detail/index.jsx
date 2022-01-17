@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom'
 
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { msTurnMins } from 'utils/utils'
-import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
+import { savePlayList } from '@/redux/actions/player-bar'
 import { repImage } from 'utils/ant'
+import { getPlayUrl } from 'utils/utils'
 import './index.scss'
 export default memo(function TopListDetail(props) {
   const { playListDetail } = useSelector(
@@ -18,7 +19,6 @@ export default memo(function TopListDetail(props) {
   const dispatch = useDispatch()
   const playMusic = (id) => {
     dispatch(savePlayList(id, true))
-    dispatch(changePlayStatus(true))
   }
 
   return (
@@ -70,7 +70,11 @@ export default memo(function TopListDetail(props) {
               <div className="flex play-box">
                 <div className="sprite_button play">
                   <i className="sprite_button inner">
-                    <em className="sprite_button play-icon"></em>播放
+                    <em
+                      className="sprite_button play-icon"
+                      onClick={() => playMusic(playListDetail.tracks[0].id)}
+                    ></em>
+                    播放
                   </i>
                 </div>
                 <div className="sprite_button favorite">
@@ -85,7 +89,12 @@ export default memo(function TopListDetail(props) {
                     {playListDetail.shareCount})
                   </i>
                 </div>
-                <div className="sprite_button download">
+                <div
+                  className="sprite_button download"
+                  onClick={() =>
+                    window.open(getPlayUrl(playListDetail.tracks[0].id))
+                  }
+                >
                   <i className="sprite_button inner">
                     <em className="sprite_button favorite-icon"></em>下载
                   </i>
@@ -164,9 +173,7 @@ export default memo(function TopListDetail(props) {
 
                           <div className="flex-column">
                             <button
-                              onClick={() => {
-                                this.props.savePlayList(songObj.id)
-                              }}
+                              onClick={() => dispatch(savePlayList(songObj.id))}
                               className="sprite_icon2 add_btn"
                             ></button>
                           </div>

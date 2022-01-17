@@ -95,7 +95,7 @@ export default memo(function NewDisc(props) {
           total={total}
           showSizeChanger={false}
           showQuickJumper={true}
-          onChange={(page, pageSize) => changePage(page, pageSize)}
+          onChange={changePage}
         />
       </div>
     </div>

@@ -5,9 +5,12 @@ import { message } from 'antd'
 
 // 保存歌曲
 export const saveCurrentSong = (currentSong, playSongIndex) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: constants.CURRENTSONG, currentSong })
     dispatch({ type: constants.PLAYSONGINDEX, playSongIndex })
+    if (!getState().playerBar.get(constants.FIRSTLOAD)) {
+      dispatch(changePlayStatus(true))
+    }
   }
 }
 
@@ -28,8 +31,7 @@ export const savePlayList = (playIds, isPlay = false) => {
       if (playIdsList.includes(playIds) && isPlay) {
         // 列表存在歌曲，立即播放
         let index = playIdsList.indexOf(playIds)
-        dispatch({ type: constants.CURRENTSONG, currentSong: playLists[index] });
-        dispatch({ type: constants.PLAYSONGINDEX, playSongIndex: index });
+        dispatch(saveCurrentSong(playLists[index], index))
         return;
       }
       if (playIdsList.includes(playIds)) {
@@ -53,15 +55,16 @@ export const savePlayList = (playIds, isPlay = false) => {
             }
           })
         })
+
+        if (isPlay) {
+          dispatch(saveCurrentSong(res.songs[0], 0))
+        }
+
         // 首次加载
         if (getState().playerBar.get(constants.FIRSTLOAD)) {
           dispatch({ type: constants.FIRSTLOAD, firstLoad: false });
         }
 
-        if (isPlay) {
-          dispatch({ type: constants.CURRENTSONG, currentSong: res.songs[0] });
-          dispatch({ type: constants.PLAYSONGINDEX, playSongIndex: 0 });
-        }
       }
     })
   }

@@ -14,11 +14,7 @@ import {
   DownloadOutlined,
 } from '@ant-design/icons'
 
-import {
-  delPlayList,
-  saveCurrentSong,
-  changePlayStatus,
-} from '@/redux/actions/player-bar'
+import { delPlayList, saveCurrentSong } from '@/redux/actions/player-bar'
 
 export default memo(function PlaylistPanel(props) {
   const lyricRef = useRef()
@@ -72,12 +68,7 @@ export default memo(function PlaylistPanel(props) {
 
   // 点击歌曲
   const switchSong = (songObj, index) => {
-    new Promise((resolve) => {
-      dispatch(saveCurrentSong(songObj, index))
-      resolve()
-    }).then(() => {
-      dispatch(changePlayStatus(true))
-    })
+    dispatch(saveCurrentSong(songObj, index))
   }
 
   const { isShowSlider, closePanel } = props

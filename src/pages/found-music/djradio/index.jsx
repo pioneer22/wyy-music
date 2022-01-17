@@ -139,7 +139,7 @@ export default memo(function AnchorStation(props) {
           total={total}
           showSizeChanger={false}
           showQuickJumper={true}
-          onChange={(page, pageSize) => changePage(page, pageSize)}
+          onChange={changePage}
         />
       </div>
     </div>

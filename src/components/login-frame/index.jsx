@@ -1,8 +1,12 @@
 /* eslint-disable no-useless-constructor */
-import React, { Component } from 'react'
+import React, { memo, useState } from 'react'
 import './index.scss'
-import { connect } from 'react-redux'
-import { changeShowLoginFrame, changeUserMsg } from '@/redux/actions/header'
+import { useDispatch } from 'react-redux'
+import {
+  changeShowLoginFrame,
+  changeUserMsg,
+  changeLoginStatus,
+} from '@/redux/actions/header'
 import { loginPosition, usualReg } from '@/common/page-data'
 import { debounce } from 'lodash'
 
@@ -21,64 +25,51 @@ import {
   UserAddOutlined,
 } from '@ant-design/icons'
 
-class LoginFrame extends Component {
-  constructor(props) {
-    super(props)
-    this.onFinish = debounce(this.onFinish, 400)
-    this.onFinish.bind(this)
-  }
-
-  componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return
-    }
-  }
-
-  state = {
-    title: '登录',
-    type: 'login',
-    isSendState: false, // 发送验证码状态
-    seconds: 60, // 倒计时
-    phone: null, // 手机号
-    nickName: '', // 昵称
-    captcha: '', // 验证码
-    password: '', // 密码
-    loginCheck: true, // 选中自动登录
-  }
+export default memo(function LoginFrame(props) {
+  const [title, setTitle] = useState('登录')
+  const [type, setType] = useState('login')
+  const [isSendState, setIsSendState] = useState(false) // 发送验证码状态
+  const [seconds, setSeconds] = useState(60) // 倒计时
+  const [phone, setPhone] = useState(null) // 手机号
+  const [nickName, setNickName] = useState('') // 昵称
+  const [captcha, setCaptcha] = useState('') // 验证码
+  const [password, setPassword] = useState('') // 密码
+  const [loginCheck, setLoginCheck] = useState(true) // 选中自动登录
+  const dispatch = useDispatch()
 
   // 切换页面
-  switchPanel(type) {
-    this.setState({ type })
+  const switchPanel = (type) => {
+    setType(type)
     switch (type) {
       case 'register':
-        this.setState({ title: '注册' })
+        setTitle('注册')
         break
       default:
-        this.setState({ title: '登录' })
+        setTitle('登录')
         break
     }
   }
 
-  toLogin(index) {
+  const toLoginPage = (index) => {
     message.warn('未做~')
   }
 
   // 发送验证码
-  sendCode() {
+  const sendCode = () => {
     // 发送验证码
-    if (!this.state.isSendState) {
-      this.setState({ isSendState: true })
+    if (!isSendState) {
+      setIsSendState(true)
       let i = 0
       const timer = setInterval(() => {
         i++
-        this.setState({ seconds: 60 - i })
+        setSeconds(60 - i)
         if (i > 60) {
           clearInterval(timer)
-          this.setState({ isSendState: false, seconds: 60 })
+          setIsSendState(false)
+          setSeconds(60)
         }
       }, 1000)
 
-      const { phone } = this.state
       if (usualReg.phoneReg.test(phone)) {
         toSendCode({ phone }).then((res) => {
           if (res.code === 200) message.success('发送成功')
@@ -90,8 +81,7 @@ class LoginFrame extends Component {
   }
 
   // 提交成功
-  onFinish(values) {
-    const { type } = this.state
+  const onFinish = debounce((values) => {
     switch (type) {
       case 'register':
         let { phone, captcha, nickname, password } = values
@@ -117,8 +107,9 @@ class LoginFrame extends Component {
               message.success('登录成功~')
               // 保存登录
               localStorage.setItem('m_uid', res.profile.userId)
-              this.props.changeShowLoginFrame(false)
-              this.props.changeUserMsg(res)
+              dispatch(changeShowLoginFrame(false))
+              dispatch(changeUserMsg(res))
+              dispatch(changeLoginStatus(true))
             } else {
               message.error(`${res.message}`)
             }
@@ -128,327 +119,294 @@ class LoginFrame extends Component {
       default:
         break
     }
-  }
+  }, 400)
 
   // 提交失败
-  onFinishFailed(errorInfo) {
+  const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo)
     message.error('请正确输入信息再提交~')
   }
-
-  render() {
-    const {
-      title,
-      type,
-      isSendState,
-      seconds,
-      phone,
-      captcha,
-      nickname,
-      password,
-      loginCheck,
-    } = this.state
-    return (
-      <div className="login-frame-container">
-        <div className="login-frame-box">
-          <Card
-            title={title}
-            extra={
-              <CloseOutlined
-                onClick={() => {
-                  this.setState({ type: 'login', title: '登录' })
-                  this.props.changeShowLoginFrame(false)
-                }}
-              />
-            }
-            style={{ width: 500 }}
+  return (
+    <div className="login-frame-container">
+      <div className="login-frame-box">
+        <Card
+          title={title}
+          extra={
+            <CloseOutlined
+              onClick={() => {
+                setType('login')
+                setTitle('登录')
+                dispatch(changeShowLoginFrame(false))
+              }}
+            />
+          }
+          style={{ width: 500 }}
+        >
+          <div
+            className="card-box"
+            style={{ display: type === 'login' ? 'block' : 'none' }}
           >
-            <div
-              className="card-box"
-              style={{ display: type === 'login' ? 'block' : 'none' }}
-            >
-              <div className="flex">
-                <div className="card-box-left">
-                  <div className="card-img"></div>
-                  <div className="flex-between">
-                    <Button
-                      type="ghost"
-                      onClick={() => {
-                        this.switchPanel('register')
-                      }}
-                      shape="round"
-                      icon={<UserAddOutlined />}
-                      className="gap"
-                    >
-                      注册
-                    </Button>
-                    <Button
-                      type="primary"
-                      shape="round"
-                      icon={<PhoneOutlined />}
-                      onClick={() => {
-                        this.switchPanel('phone')
-                      }}
-                    >
-                      手机号登录
-                    </Button>
-                  </div>
-                </div>
-                <div className="card-box-right">
-                  {loginPosition.map((posObj, index) => {
-                    return (
-                      <div
-                        className="login-icon-box flex-column"
-                        key={index}
-                        onClick={() => {
-                          this.toLogin(index)
-                        }}
-                      >
-                        <i className="theme-logo" style={posObj.style}></i>
-                        <span className="text-line">{posObj.title}</span>
-                      </div>
-                    )
-                  })}
+            <div className="flex">
+              <div className="card-box-left">
+                <div className="card-img"></div>
+                <div className="flex-between">
+                  <Button
+                    type="ghost"
+                    onClick={() => {
+                      switchPanel('register')
+                    }}
+                    shape="round"
+                    icon={<UserAddOutlined />}
+                    className="gap"
+                  >
+                    注册
+                  </Button>
+                  <Button
+                    type="primary"
+                    shape="round"
+                    icon={<PhoneOutlined />}
+                    onClick={() => {
+                      switchPanel('phone')
+                    }}
+                  >
+                    手机号登录
+                  </Button>
                 </div>
               </div>
-            </div>
-
-            <Form
-              style={{ display: type === 'register' ? 'block' : 'none' }}
-              name="basic"
-              labelCol={{
-                span: 7,
-              }}
-              wrapperCol={{ span: 12 }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={(values) => {
-                this.onFinish(values)
-              }}
-              onFinishFailed={(values) => {
-                this.onFinishFailed(values)
-              }}
-              autoComplete="off"
-            >
-              <Form.Item
-                label="手机号"
-                name="phone"
-                rules={[
-                  {
-                    pattern: usualReg.phoneReg,
-                    required: true,
-                    message: '请输入正确手机号码~',
-                  },
-                ]}
-              >
-                <Input
-                  value={phone}
-                  onChange={({ target }) => {
-                    this.setState({ phone: target.value })
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="密码"
-                name="password"
-                rules={[
-                  {
-                    pattern: usualReg.pwdReg,
-                    required: true,
-                    message: '请输入6-18位字母,数字,_,- 密码~',
-                  },
-                ]}
-              >
-                <Input.Password
-                  value={password}
-                  onChange={({ target }) => {
-                    this.setState({ password: target.value })
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                wrapperCol={{ span: 19 }}
-                style={{ marginBottom: '0px' }}
-              >
-                <div className="send-code">
-                  {isSendState ? (
-                    <span className="text-line">{seconds}s</span>
-                  ) : (
-                    <span
-                      className="text-line"
+              <div className="card-box-right">
+                {loginPosition.map((posObj, index) => {
+                  return (
+                    <div
+                      className="login-icon-box flex-column"
+                      key={index}
                       onClick={() => {
-                        this.sendCode()
+                        toLoginPage(index)
                       }}
                     >
-                      发送验证码
-                    </span>
-                  )}
-                </div>
-              </Form.Item>
+                      <i className="theme-logo" style={posObj.style}></i>
+                      <span className="text-line">{posObj.title}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
 
-              <Form.Item
-                label="验证码"
-                name="captcha"
-                rules={[
-                  {
-                    pattern: /(\d){4}/,
-                    required: true,
-                    message: '验证码为四位~',
-                  },
-                ]}
-              >
-                <Input
-                  value={captcha}
-                  onChange={({ target }) => {
-                    this.setState({ captcha: target.value })
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="昵称"
-                name="nickName"
-                rules={[
-                  {
-                    required: true,
-                    message: '昵称不能为空~',
-                  },
-                ]}
-              >
-                <Input
-                  value={nickname}
-                  onChange={({ target }) => {
-                    this.setState({ nickname: target.value })
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                wrapperCol={{
-                  offset: 4,
-                  span: 15,
-                }}
-              >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{ width: '100%' }}
-                >
-                  注册
-                </Button>
-              </Form.Item>
-            </Form>
-
-            <Form
-              style={{ display: type === 'phone' ? 'block' : 'none' }}
-              name="basic"
-              labelCol={{
-                span: 7,
-              }}
-              wrapperCol={{ span: 12 }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={(values) => {
-                this.onFinish(values)
-              }}
-              onFinishFailed={(values) => {
-                this.onFinishFailed(values)
-              }}
-              autoComplete="off"
+          <Form
+            style={{ display: type === 'register' ? 'block' : 'none' }}
+            name="basic"
+            labelCol={{
+              span: 7,
+            }}
+            wrapperCol={{ span: 12 }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="手机号"
+              name="phone"
+              rules={[
+                {
+                  pattern: usualReg.phoneReg,
+                  required: true,
+                  message: '请输入正确手机号码~',
+                },
+              ]}
             >
-              <Form.Item
-                label="手机号"
-                name="phone"
-                rules={[
-                  {
-                    pattern: usualReg.phoneReg,
-                    required: true,
-                    message: '请输入正确手机号码~',
-                  },
-                ]}
-              >
-                <Input
-                  value={phone}
-                  onChange={({ target }) => {
-                    this.setState({ phone: target.value })
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="密码"
-                name="password"
-                rules={[
-                  {
-                    pattern: usualReg.pwdReg,
-                    required: true,
-                    message: '请输入6-18位字母,数字,_,- 密码~',
-                  },
-                ]}
-              >
-                <Input.Password
-                  value={password}
-                  onChange={({ target }) => {
-                    this.setState({ password: target.value })
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="remember"
-                valuePropName="checked"
-                wrapperCol={{ offset: 4, span: 15 }}
-              >
-                <div className="flex-between-center">
-                  <Checkbox
-                    checked={loginCheck}
-                    onChange={() => {
-                      this.setState({ loginCheck: !loginCheck })
-                    }}
-                  >
-                    自动登录
-                  </Checkbox>
-                  <span
-                    className="text-line"
-                    onClick={() => {
-                      message.warn('未做~')
-                    }}
-                  >
-                    忘记密码
-                  </span>
-                </div>
-              </Form.Item>
-
-              <Form.Item
-                wrapperCol={{
-                  offset: 4,
-                  span: 15,
+              <Input
+                value={phone}
+                onChange={({ target }) => {
+                  setPhone(target.value)
                 }}
-              >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  shape="round"
-                  style={{ width: '100%' }}
-                >
-                  登录
-                </Button>
-              </Form.Item>
-            </Form>
-          </Card>
-        </div>
-      </div>
-    )
-  }
-}
+              />
+            </Form.Item>
 
-export default connect(
-  (store) => ({
-    header: store.header,
-  }),
-  { changeShowLoginFrame, changeUserMsg }
-)(LoginFrame)
+            <Form.Item
+              label="密码"
+              name="password"
+              rules={[
+                {
+                  pattern: usualReg.pwdReg,
+                  required: true,
+                  message: '请输入6-18位字母,数字,_,- 密码~',
+                },
+              ]}
+            >
+              <Input.Password
+                value={password}
+                onChange={({ target }) => {
+                  setPassword(target.value)
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              wrapperCol={{ span: 19 }}
+              style={{ marginBottom: '0px' }}
+            >
+              <div className="send-code">
+                {isSendState ? (
+                  <span className="text-line">{seconds}s</span>
+                ) : (
+                  <span className="text-line" onClick={sendCode}>
+                    发送验证码
+                  </span>
+                )}
+              </div>
+            </Form.Item>
+
+            <Form.Item
+              label="验证码"
+              name="captcha"
+              rules={[
+                {
+                  pattern: /(\d){4}/,
+                  required: true,
+                  message: '验证码为四位~',
+                },
+              ]}
+            >
+              <Input
+                value={captcha}
+                onChange={({ target }) => {
+                  setCaptcha(target.value)
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="昵称"
+              name="nickName"
+              rules={[
+                {
+                  required: true,
+                  message: '昵称不能为空~',
+                },
+              ]}
+            >
+              <Input
+                value={nickName}
+                onChange={({ target }) => {
+                  setNickName(target.value)
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                offset: 4,
+                span: 15,
+              }}
+            >
+              <Button
+                type="primary"
+                htmlType="submit"
+                shape="round"
+                style={{ width: '100%' }}
+              >
+                注册
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <Form
+            style={{ display: type === 'phone' ? 'block' : 'none' }}
+            name="basic"
+            labelCol={{
+              span: 7,
+            }}
+            wrapperCol={{ span: 12 }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="手机号"
+              name="phone"
+              rules={[
+                {
+                  pattern: usualReg.phoneReg,
+                  required: true,
+                  message: '请输入正确手机号码~',
+                },
+              ]}
+            >
+              <Input
+                value={phone}
+                onChange={({ target }) => {
+                  setPhone(target.value)
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="密码"
+              name="password"
+              rules={[
+                {
+                  pattern: usualReg.pwdReg,
+                  required: true,
+                  message: '请输入6-18位字母,数字,_,- 密码~',
+                },
+              ]}
+            >
+              <Input.Password
+                value={password}
+                onChange={({ target }) => {
+                  setPassword(target.value)
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+              wrapperCol={{ offset: 4, span: 15 }}
+            >
+              <div className="flex-between-center">
+                <Checkbox
+                  checked={loginCheck}
+                  onChange={() => {
+                    setLoginCheck(!loginCheck)
+                  }}
+                >
+                  自动登录
+                </Checkbox>
+                <span
+                  className="text-line"
+                  onClick={() => {
+                    message.warn('未做~')
+                  }}
+                >
+                  忘记密码
+                </span>
+              </div>
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                offset: 4,
+                span: 15,
+              }}
+            >
+              <Button
+                type="primary"
+                htmlType="submit"
+                shape="round"
+                style={{ width: '100%' }}
+              >
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </div>
+    </div>
+  )
+})

@@ -1,13 +1,6 @@
 /* eslint-disable default-case */
 /* eslint-disable no-const-assign */
-import React, {
-  lazy,
-  memo,
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-} from 'react'
+import React, { lazy, memo, useState, useEffect, useRef } from 'react'
 import './index.scss'
 
 import { Slider, Tooltip, message } from 'antd'
@@ -72,7 +65,7 @@ export default memo(function PlayBar(props) {
 
   useEffect(() => {
     isPlay ? audioRef.current.play() : audioRef.current.pause()
-  }, [isPlay])
+  }, [isPlay, currentSong])
 
   const picUrl = currentSong.al && currentSong.al.picUrl // 图片url
   const songName = currentSong.name // 歌曲名字
@@ -107,20 +100,13 @@ export default memo(function PlayBar(props) {
       }
     }
 
-    new Promise((resolve) => {
-      audioRef.current.currentTime = 0
-      dispatch(saveCurrentSong(playList[newPlaySongIndex], newPlaySongIndex))
-      resolve()
-    }).then(() => {
-      audioRef.current.play()
-      dispatch(changePlayStatus(true))
-    })
+    audioRef.current.currentTime = 0
+    dispatch(saveCurrentSong(playList[newPlaySongIndex], newPlaySongIndex))
   }
 
   // 更改播放进度条
   const timeUpdate = () => {
     let ct = audioRef.current.currentTime
-    // let totalTime = currentSong.dt
     if (!isChange) {
       setPlayCurrentTime(msTurnMins(ct * 1000))
       setProgress((ct * 1000 * 100) / duration)
@@ -168,15 +154,9 @@ export default memo(function PlayBar(props) {
         break
     }
 
-    new Promise((resolve) => {
-      audioRef.current.currentTime = 0
-      dispatch(changeCurrentLyricIndex(0))
-      dispatch(saveCurrentSong(playList[newIndex], newIndex))
-      resolve()
-    }).then(() => {
-      audioRef.current.play()
-      dispatch(changePlayStatus(true))
-    })
+    audioRef.current.currentTime = 0
+    dispatch(changeCurrentLyricIndex(0))
+    dispatch(saveCurrentSong(playList[newIndex], newIndex))
   }
 
   /* 播放链接出错 */
@@ -189,15 +169,12 @@ export default memo(function PlayBar(props) {
     dispatch(saveCurrentSong(playList[index], index))
   }
 
-  const sliderChange = useCallback(
-    (value) => {
-      setIsChange(true)
-      let currentTime = (value / 100) * duration
-      setProgress(value)
-      setPlayCurrentTime(msTurnMins(currentTime))
-    },
-    [duration]
-  )
+  const sliderChange = (value) => {
+    setIsChange(true)
+    let currentTime = (value / 100) * duration
+    setProgress(value)
+    setPlayCurrentTime(msTurnMins(currentTime))
+  }
 
   const slideAfterChange = (value) => {
     let totalTime = currentSong.dt

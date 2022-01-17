@@ -26,7 +26,7 @@ import {
   createMusicList,
   deleteMusicList,
 } from '@/api/global'
-import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
+import { savePlayList } from '@/redux/actions/player-bar'
 const { Panel } = Collapse
 const { confirm } = Modal
 
@@ -60,8 +60,8 @@ export default memo(function MyMusic(props) {
         }
       })
     } else {
-      setMusicLists(musicLists)
-      reqPlayList(musicLists[0].id)
+      setMusicLists(musicList)
+      reqPlayList(musicList[0].id)
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -99,7 +99,6 @@ export default memo(function MyMusic(props) {
   // 播放音乐
   const playMusic = (id) => {
     dispatch(savePlayList(id, true))
-    dispatch(changePlayStatus(true))
   }
 
   // 新建歌单

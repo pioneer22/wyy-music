@@ -6,7 +6,8 @@ import { NavLink } from 'react-router-dom'
 import { msTurnMins, getPlayUrl, delDate } from 'utils/utils'
 import { repImage } from 'utils/ant'
 import { Tabs, message, Pagination } from 'antd'
-import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
+import { savePlayList } from '@/redux/actions/player-bar'
+import { useDispatch } from 'react-redux'
 
 import {
   UserOutlined,
@@ -36,6 +37,7 @@ export default memo(function Artist(props) {
   const [introduction, setIntroduction] = useState([])
   const [briefDesc, setBriefDesc] = useState([])
   const [simiArtists, setSimiArtists] = useState([])
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const { search } = props.location
@@ -84,8 +86,7 @@ export default memo(function Artist(props) {
   }
 
   const playMusic = (id) => {
-    savePlayList(id, true)
-    changePlayStatus(true)
+    dispatch(savePlayList(id, true))
   }
 
   const changePage = (page, pageSize) => {
@@ -151,9 +152,9 @@ export default memo(function Artist(props) {
                         <div className="opera-box flex-column">
                           <PlusOutlined
                             style={{ fontSize: '16px' }}
-                            onClick={() => {
-                              this.props.savePlayList(songObj.id, false)
-                            }}
+                            onClick={() =>
+                              dispatch(savePlayList(songObj.id, false))
+                            }
                           />
                           <DownloadOutlined
                             style={{ fontSize: '16px', marginLeft: '5px' }}
@@ -204,7 +205,7 @@ export default memo(function Artist(props) {
                     total={albumSize}
                     showSizeChanger={false}
                     showQuickJumper={true}
-                    onChange={(page, pageSize) => changePage(page, pageSize)}
+                    onChange={changePage}
                   />
                 </div>
               ) : (

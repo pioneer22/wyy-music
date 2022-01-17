@@ -8,7 +8,7 @@ import { LikeOutlined } from '@ant-design/icons'
 import { getAlbumDetail, getAlnumComment } from '@/api/global'
 import { msTurnMins } from 'utils/utils'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { savePlayList, changePlayStatus } from '@/redux/actions/player-bar'
+import { savePlayList } from '@/redux/actions/player-bar'
 import { message, Comment, Avatar, Form, Button, Input, Pagination } from 'antd'
 import { repImage } from 'utils/ant'
 const { TextArea } = Input
@@ -56,7 +56,6 @@ export default memo(function Album(props) {
 
   const playMusic = (id) => {
     dispatch(savePlayList(id, true))
-    dispatch(changePlayStatus(true))
   }
 
   // 提交评论
@@ -248,7 +247,7 @@ export default memo(function Album(props) {
           total={total}
           showSizeChanger={false}
           showQuickJumper={true}
-          onChange={(page, pageSize) => changePage(page, pageSize)}
+          onChange={changePage}
         />
       </div>
     </div>

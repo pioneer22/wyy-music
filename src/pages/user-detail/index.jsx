@@ -18,14 +18,16 @@ export default memo(function UserDetail(props) {
   const [profile, setProfile] = useState({})
   const dispatch = useDispatch()
 
-  const { musicList } = useSelector((state) => ({
-    musicList: state.header.musicList,
-  }))
+  const { musicList } = useSelector(
+    (state) => ({
+      musicList: state.header.musicList,
+    }),
+    shallowEqual
+  )
 
   useEffect(() => {
     const { search } = props.location
     const { id } = qs.parse(search.slice(1))
-
     if (musicList.length === 0) {
       getPlayList(id).then((res) => {
         if (res.code === 200) {
@@ -36,7 +38,6 @@ export default memo(function UserDetail(props) {
     } else {
       setPlaylist(musicList)
     }
-
     getUserDetail(id).then((res) => {
       if (res.code === 200) {
         setProfile(res.profile)
@@ -104,7 +105,7 @@ export default memo(function UserDetail(props) {
         {playlist.map((listObj) => {
           return (
             <li className="playlist-item" key={listObj.id}>
-              <NavLink to={`/playlist?id=${listObj.id}`}>
+              <NavLink to={`/playlists?id=${listObj.id}`}>
                 <MusicModule
                   {...listObj}
                   picUrl={listObj.coverImgUrl + '?param=140x140'}
