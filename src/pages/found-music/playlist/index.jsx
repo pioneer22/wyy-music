@@ -113,7 +113,7 @@ export default class Playlist extends Component {
         <div className="playlist-type-container">
           <div className="playlist-type-songs flex">
             {playlists.map((lists) => (
-              <NavLink key={lists.id} to={`/playlist?id=${lists.id}`}>
+              <NavLink key={lists.id} to={`/playlists?id=${lists.id}`}>
                 <MusicModule {...lists}></MusicModule>
               </NavLink>
             ))}

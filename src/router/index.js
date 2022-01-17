@@ -69,7 +69,7 @@ const routes = [
     path: '/user', component: UserDetail
   },
   {
-    path: '/playlist', component: PlayListDetail
+    path: '/playlists', component: PlayListDetail
   },
   {
     path: '/albums', component: AlbumDetail

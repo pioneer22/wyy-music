@@ -99,7 +99,7 @@ class UserDetail extends Component {
           {playlist.map((listObj) => {
             return (
               <li className="playlist-item" key={listObj.id}>
-                <NavLink to={`/playlist?id=${listObj.id}`}>
+                <NavLink to={`/playlists?id=${listObj.id}`}>
                   <MusicModule
                     {...listObj}
                     picUrl={listObj.coverImgUrl + '?param=140x140'}
